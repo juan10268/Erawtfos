@@ -1,6 +1,11 @@
 package dto;
 
-public class EmpleadoDto {
+import java.io.Serializable;
+
+import javax.faces.bean.ManagedBean;
+
+@ManagedBean
+public class EmpleadoDto implements Serializable{
 	private int id_empleado, rol_empleado;
 	private String nom_empleado, pass_empleado;
 		

@@ -1,10 +1,11 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns ="http://www.w3.org/1999/xhtml"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:p="http://primefaces.org/ui">
-	
+		
 	<f:view contentType="text/html">
         <h:head>
             <f:facet name="first">
@@ -12,10 +13,20 @@
                 <title>Tienda Cristhian - Inicio de sesion </title>
             </f:facet>
         </h:head>
-		<body>
-		</body>
-		</f:view>
-		</html> 
+        <h:body>
+         <h:form id="form" > 
+            <p:panel id= "login" header="Iniciar sesion en la aplicacion">
+	   		<p:panelGrid columns= "1">
+	   			<h:outputLabel for="usuario" value="Identificacion de usuario:" /> 
+            	<p:inputText id="usuario" value="#{empleadoDto.id_empleado}" required="true"/>                        
+            	<h:outputLabel for="pass" value="Contrasena:" /> 
+            	<p:password id="pass" value="#{empleadoDto.pass_empleado}" required="true"/>            
+            	<p:commandButton value="Ingresar" id="Ingresar" action="#{empleado.loginEmpleado(empleadoDto)}">
+            	</p:commandButton>              
+            </p:panelGrid>
+            </p:panel>
+        </h:form>
+       </h:body>
+    </f:view>
+</html>   
 
-</body> 
-</html>

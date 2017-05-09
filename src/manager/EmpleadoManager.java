@@ -6,17 +6,8 @@ import dto.EmpleadoDto;
 public class EmpleadoManager {
 	EmpleadoDao empleadoDao= new EmpleadoDao();
 		
-	public String consultarUsuario(int cod) throws Exception {	
-		String user_Name=empleadoDao.consultarNombre(cod);
-		String user_Comprobation;
-		if(user_Name==null){			
-			user_Comprobation= null;
-		}
-		else{
-			user_Comprobation= "" + user_Name;
-		}
-		System.out.println(user_Comprobation);
-		return user_Comprobation;
+	public String loginEmpleado(int id_persona, String pass_persona) throws Exception {	
+		return "";
 	}
 	public void ingresarUsuario (EmpleadoDto empleado) throws Exception {
 		empleadoDao.ingresar(empleado);
