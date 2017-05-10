@@ -1,7 +1,6 @@
 package command;
 
 import javax.faces.bean.ManagedBean;
-
 import dto.EmpleadoDto;
 import manager.EmpleadoManager;
 

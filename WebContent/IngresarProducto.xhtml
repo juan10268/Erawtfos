@@ -5,28 +5,29 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:p="http://primefaces.org/ui">
-		
+	
 	<f:view contentType="text/html">
         <h:head>
             <f:facet name="first">
                 <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
-                <title>Tienda Cristhian - Inicio de sesion </title>
+                <title>Ingreso producto </title>
             </f:facet>
         </h:head>
         <h:body>
          <h:form id="form" > 
-            <p:panel id= "login" header="Iniciar sesion en la aplicación">
+            <p:panel id= "login" header="registro de productos">
 	   		<p:panelGrid columns= "1">
-	   			<h:outputLabel for="usuario" value="Identificacion de usuario:" /> 
-            	<p:inputText id="usuario" value="#{empleadoDto.id_empleado}" required="true"/>                        
-            	<h:outputLabel for="pass" value="Contrasena:" /> 
-            	<p:password id="pass" value="#{empleadoDto.pass_empleado}" required="true"/>            
-            	<p:commandButton value="Ingresar" id="Ingresar" action="#{empleado.loginEmpleado(empleadoDto)}">
+	   			<h:outputLabel value="id producto:" /> 
+            	<p:inputText value="#{productosDto.producto_id}" required="true"/>   
+            	<h:outputLabel value="nombre producto:" />                     
+            	<p:password value="#{productosDto.producto_nombre}" required="true"/> 
+            	<h:outputLabel value="cantidad producto:" />                     
+            	<p:password value="#{productosDto.producto_cantidad}" required="true"/>               
+            	<p:commandButton value="Ingresar" id="Ingresar" action="#{producto.loginProducto(productosDto)}">
             	</p:commandButton>              
             </p:panelGrid>
             </p:panel>
         </h:form>
        </h:body>
     </f:view>
-</html>   
-
+</html>

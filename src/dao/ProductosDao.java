@@ -5,10 +5,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import dto.ProductoDto;
+import dto.ProductosDto;
 
-public class ProductoDao {
-	ProductoDto productoDto= new ProductoDto();	
+public class ProductosDao {
+	ProductosDto productoDto= new ProductosDto();	
 	public String comprobarproductoId(int id) throws Exception {
 		Connection con = new Conexion().obtenerConexion();
 		PreparedStatement pst;
@@ -21,10 +21,9 @@ public class ProductoDao {
 		String nom_produc= productoDto.getProducto_nombre();		
 		return nom_produc;
 	}
-	public boolean IngresarProducto(ProductoDto producto, Connection con){
+	public boolean IngresarProducto(ProductosDto producto, Connection con){
 		try {
-			String sql = "INSERT INTO producto (idProduc,nomProduc,cantiProduc,valorProducto" 
-					+ " VALUES (?,?,?,?)" ;		
+			String sql = "INSERT INTO `cristhian`.`productos` (`id_producto`, `nombre_producto`, `cantidad_producto`) VALUES (?,?,?)" ;		
 			PreparedStatement sentencia=null;
 			int rss=0;	
 			sentencia = (PreparedStatement) con.prepareStatement(sql);	
@@ -39,7 +38,7 @@ public class ProductoDao {
 			return false;
 		}
 	}
-	public boolean agregar(ProductoDto producto, Connection con) {
+	public boolean agregar(ProductosDto producto, Connection con) {
 		try {
 			String sql = "INSERT INTO producto (idProduc,nomProduc,cantiProduc,valorProducto" 
 					+ " VALUES (?,?,?,?)" ;
@@ -57,7 +56,7 @@ public class ProductoDao {
 			return false;
 		}
 	}
-	public boolean eliminar(ProductoDto ProductoDto, Connection con)
+	public boolean eliminar(ProductosDto ProductoDto, Connection con)
 			throws SQLException {
 		String sql = "DELETE FROM producto  WHERE idProduc= ?";		
 		PreparedStatement instruccion = con.prepareStatement(sql);
@@ -68,7 +67,7 @@ public class ProductoDao {
 			return false;
 		}
 	}
-	public boolean modificar(ProductoDto producto, Connection con)
+	public boolean modificar(ProductosDto producto, Connection con)
 			throws SQLException {
 		String sql = "UPDATE `tienda`.`producto` SET `idProduc`=?, `nomProduc`=? WHERE `cantiProduc`=?;`valorProducto`";
 		PreparedStatement sentencia=null;

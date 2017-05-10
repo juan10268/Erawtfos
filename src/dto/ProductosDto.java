@@ -1,6 +1,9 @@
 package dto;
 
-public class ProductoDto {
+import javax.faces.bean.ManagedBean;
+
+@ManagedBean
+public class ProductosDto {
 	private int producto_id, producto_cantidad, producto_valor;
 	private String producto_nombre;
 	
