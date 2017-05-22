@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns ="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+		
+	<f:view contentType="text/html">
+        <h:head>
+            <f:facet name="first">
+                <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+                <title>Tienda Cristhian - Ventas </title>
+            </f:facet>
+        </h:head>
+       <h:body onload="#{empleado.consultarEmpleadoVentas(empleadoListaDto)}">
+       	 <h:form id="formInicio">
+          	<p:growl id="msgs" showDetail="true" />
+            <p:panel widgetVar="inicio" style="width:65%; margin-top:75px; margin-left:230px; text-align:center;" header="Consulta de ventas en la aplicacion">
+          	  <p:commandButton value="Ver el total de ventas" ondblclick="PF('inicio').close() ; PF('total_ven').show()"/>
+          	  <p:commandButton value="Ver ventas por empleado" ondblclick="PF('inicio').close(); PF('mostrar').show()"/>
+          	  <p:commandButton value="Ver ventas por dia" ondblclick="PF('inicio').close(); PF('dia').show()"/> 
+            </p:panel>
+        </h:form>
+        <h:form id="consu_ventas">        
+         <p:panel widgetVar="mostrar" style="display:none;width:40%; margin-top:75px; margin-left:400px; text-align:center;" header="Mostrar ventas por empleado - Tienda Cristhian">
+	   		 <p:panelGrid style="width:100%; text-align:center" columns= "1">
+	   		   <h:outputText value="Documento:"/>
+	   		   <p:selectOneMenu value="#{empleadoDto.id_empleado}" rendered="true">
+	   		   		<f:selectItem itemLabel="Seleccione el empleado" itemValue=""/>
+	   		   		<f:selectItems value="#{empleadoListaDto.listaEmpleado}"/>
+	   		   		<p:ajax event="change" update=":consu_ventas:lista , :consu_ventas:info" listener="#{ventas.mostrarVentas(empleadoDto,ventasListasDto)}"/>
+	   		   </p:selectOneMenu>
+	   		  </p:panelGrid>            
+              <p:dataTable var="listaventas" value="#{ventasListasDto.listaVentas}" widgetVar="listainfo" id="lista" rendered="true" style="width:100%; margin-top:10px; text-align:center;" emptyMessage="Seleccione el empleado">				
+						<p:column headerText="ID">
+							<h:outputText value="#{listaventas.id_ventas}" />
+						</p:column>
+						<p:column headerText="Fecha Ventas">
+							<h:outputText value="#{listaventas.fecha_venta}"/>
+						</p:column>
+						<p:column headerText="Valor de Ventas">
+							<h:outputText value="#{listaventas.val_ventas}"/>
+						</p:column>	
+			</p:dataTable>
+			<p:panelGrid id="info" style="margin-top:10px; width:100%; text-align:center" columns="2">
+			<h:outputLabel value="Numero de ventas:" /> 
+            <p:inputText id="num_ventas" style="width:50%; text-align:center;" readonly="true" value="#{ventasListasDto.listaVentas.size()}"/>
+            <h:outputLabel value="Valor vendido:" /> 
+            <p:inputText id="valor_ventas" style="width:50%; text-align:center;" readonly="true" value="#{ventas.ventasEmpleadosPorid(empleadoDto, ventasListasDto)}"/>            
+            </p:panelGrid>
+		  </p:panel>
+        </h:form>
+        </h:body>
+        <h:body onload="#{ventas.mostrarTotalVentas(ventasListasDto)}">
+        <h:form id="formvistas">           	
+            <p:panel widgetVar="total_ven" id="total_ven" style="width:60%; margin-top:75px; margin-left:300px; text-align:center; display:none" header="Mostrar ventas - Tienda Cristhian">
+	   		 <p:dataTable var="listaventas" value="#{ventasListasDto.listaVentas}" widgetVar="listainfo" id="lista" rendered="true" style="width:100%; text-align:center">				
+						<p:column headerText="ID">
+							<h:outputText value="#{listaventas.id_ventas}" />
+						</p:column>
+						<p:column headerText="Vendedor">
+							<h:outputText value="#{listaventas.nom_empventas}"/>
+						</p:column>	
+						<p:column headerText="Fecha Ventas">
+							<h:outputText value="#{listaventas.fecha_venta}"/>
+						</p:column>	
+						<p:column headerText="Valor de Ventas">
+							<h:outputText value="#{listaventas.val_ventas}"/>
+						</p:column>	
+			</p:dataTable>
+			<p:panelGrid id="vistatotal" style="margin-top:10px; width:100%; text-align:center" columns="2">
+			<h:outputLabel value="Numero de ventas:" /> 
+            <p:inputText id="num_ventas" style="width:50%; text-align:center;" readonly="true" value="#{ventasListasDto.listaVentas.size()}"/>
+            <h:outputLabel value="Valor vendido:" /> 
+            <p:inputText id="valor_ventas" style="width:50%; text-align:center;" readonly="true" value="#{ventas.ventasEmpleadosTotales(ventasListasDto)}"/>                        
+            </p:panelGrid>
+            </p:panel>
+       </h:form>
+    </h:body>
+    <h:body onload="#{ventas.mostrarVentaspordia(ventasListasDto)};">
+        <h:form id="formdia">           	
+           <p:panel widgetVar="dia" style="display:none;width:40%; margin-top:75px; margin-left:400px; text-align:center;" header="Mostrar ventas por empleado - Tienda Cristhian">
+	   		 <p:panelGrid style="width:100%; text-align:center" columns= "1">
+	   		   <h:outputText value="Documento:"/>
+	   		   <p:selectOneMenu value="#{ventasDto.fecha_venta}" rendered="true">
+	   		   		<f:selectItem itemLabel="Seleccione la fecha" itemValue=""/>
+	   		   		<f:selectItems value="#{ventasListasDto.lista}"/>
+	   		   		<p:ajax event="change" update=":formdia:lista , :formdia:infodia" listener="#{ventas.mostrarDiaVenta(ventasDto,ventasListasDto)}"/>
+	   		   </p:selectOneMenu>
+	   		  </p:panelGrid> 
+	   		  <p:dataTable var="listadias" value="#{ventasListasDto.listaVentasDia}" id="lista" rendered="true" style="width:100%; margin-top:10px; text-align:center;" emptyMessage="Seleccione la fecha">				
+						<p:column headerText="ID">
+							<h:outputText value="#{listadias.id_ventas}" />
+						</p:column>
+						<p:column headerText="Vendedor">
+							<h:outputText value="#{listadias.nom_empventas}"/>
+						</p:column>
+						<p:column headerText="Valor de ventas">
+							<h:outputText value="#{listadias.val_ventas}"/>
+						</p:column>						
+			</p:dataTable> 
+			<p:panelGrid id="infodia" style="margin-top:10px; width:100%; text-align:center" columns="2">
+			<h:outputLabel value="Numero de ventas:" /> 
+            <p:inputText id="num_ventas" style="width:50%; text-align:center;" readonly="true" value="#{ventasListasDto.listaVentasDia.size()}"/>
+            <h:outputLabel value="Valor vendido:" /> 
+            <p:inputText id="valor_ventas" style="width:50%; text-align:center;" readonly="true" value="#{ventas.ventasporDia(ventasDto, ventasListasDto)}"/>            
+            </p:panelGrid>			  
+            </p:panel>
+       </h:form>
+    </h:body>
+  </f:view>
+</html>
+        
+         
+

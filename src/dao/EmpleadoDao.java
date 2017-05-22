@@ -3,8 +3,13 @@ package dao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 import dto.EmpleadoDto;
+import dto.EmpleadoListaDto;
 
 public class EmpleadoDao {
 	EmpleadoDto empleado1= new EmpleadoDto();
@@ -12,44 +17,113 @@ public class EmpleadoDao {
 	public boolean ingresar(EmpleadoDto empleado1) throws Exception {
 		Connection con= new Conexion().obtenerConexion();
 		try {
-			String p = "INSERT INTO empleados (id_emp, nom_emp, rol_emp, pass_emp)"
-					+ " VALUES (?,?,?,?)" ;
-			PreparedStatement sentencia1=null;
-			int rss=0;			
-	       	sentencia1=con.prepareStatement(p);
-	       	sentencia1.setInt(1, empleado1.getId_empleado());
-	       	sentencia1.setString(2, empleado1.getNom_empleado());
-	       	sentencia1.setInt(3, empleado1.getRol_empleado());
-	       	sentencia1.setString(4, empleado1.getPass_empleado());
-	    	rss=sentencia1.executeUpdate();	
+			PreparedStatement ps;			
+	       	ps=con.prepareStatement("INSERT INTO empleados (id_emp, nom_emp, rol_emp, pass_emp) VALUES (?,?,?,?)");
+	       	ps.setInt(1, empleado1.getId_empleado());
+	       	ps.setString(2, empleado1.getNom_empleado());
+	       	ps.setInt(3, empleado1.getRol_empleado());
+	       	ps.setString(4, empleado1.getPass_empleado());
+	       	ps.executeUpdate();
 	    	return true;
 	    	}catch (Exception e) {
 	    		return false;
 	    	}
 	}
-	public String consultarNombre(int id) throws Exception{
+	public String login(int id, String pass) throws Exception{	
 		Connection con= new Conexion().obtenerConexion();
 		PreparedStatement pst;
-		pst= con.prepareStatement("SELECT * FROM empleados where id_emp=?");
+		pst= con.prepareStatement("SELECT * FROM empleados where id_emp=? AND pass_emp=?");
 		pst.setInt(1, id);
+		pst.setString(2, pass);
 		ResultSet rs= pst.executeQuery();
-		while(rs.next()){
+		String per_nombre=null;
+		if(rs.next()==true){
 			empleado1.setNom_empleado(rs.getString("nom_emp"));
+			per_nombre = empleado1.getNom_empleado();
 		}
-		String per_nombre = empleado1.getNom_empleado();
 		rs.close();
 		return per_nombre;
 	}
-	public String consultarPass(int id) throws Exception{
+	public void consultarEmpleado(EmpleadoListaDto empleadoListaDto) throws Exception {
 		Connection con= new Conexion().obtenerConexion();
-		PreparedStatement pst;
-		pst= con.prepareStatement("SELECT * FROM empleados where id_emp=?");
-		pst.setInt(1, id);
-		ResultSet rs= pst.executeQuery();
+		PreparedStatement ps;
+		ps= con.prepareStatement("SELECT * FROM empleados");
+		Map<String, Object> empleado= new LinkedHashMap<String, Object>();
+		ResultSet rs= ps.executeQuery();
 		while(rs.next()){
-			empleado1.setPass_empleado(rs.getString("pass_emp"));
+			empleado.put(rs.getString("nom_emp"), rs.getInt("id_emp"));			
 		}
-		String per_pass= empleado1.getPass_empleado();
-		return per_pass;
+		rs.close();
+		empleadoListaDto.setListaEmpleado(empleado);
+	}
+	public String consultarIdentificacion(int id_empleado) throws Exception {
+		Connection con= new Conexion().obtenerConexion();
+		PreparedStatement ps;
+		ps= con.prepareStatement("SELECT * FROM empleados WHERE id_emp=?");
+		ps.setInt(1, id_empleado);
+		ResultSet rs= ps.executeQuery();
+		String per_id= null;
+		while(rs.next()){
+			empleado1.setNom_empleado(rs.getString("nom_emp"));
+			per_id=empleado1.getNom_empleado();
+		}
+		rs.close();
+		return per_id;		
+	}
+	public boolean eliminar(int id_empleado) throws Exception {
+		Connection con= new Conexion().obtenerConexion();
+		PreparedStatement ps;
+		ps= con.prepareStatement("DELETE FROM empleados WHERE id_emp=?");
+		ps.setInt(1, id_empleado);
+		if(ps.executeUpdate()>= 1) {
+			return true;
+		}
+		else{
+			return false;
+		}
+	}
+	public boolean actualizar(EmpleadoDto empleadoDto) throws Exception {
+		Connection con= new Conexion().obtenerConexion();
+		PreparedStatement ps;
+		ps= con.prepareStatement("UPDATE empleados SET rol_emp=? AND pass_emp=? WHERE id_emp=?");
+		ps.setInt(1, empleadoDto.getRol_empleado());
+		ps.setString(2, empleadoDto.getPass_empleado());
+		ps.setInt(3, empleadoDto.getId_empleado());
+		if (ps.executeUpdate() >= 1) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+	public List<EmpleadoDto> consultarInfo(int id_empleado, EmpleadoListaDto empleadoListaDto) throws Exception {
+		Connection con= new Conexion().obtenerConexion();
+		List<EmpleadoDto> listaEmpleado = new ArrayList<EmpleadoDto>();
+		PreparedStatement ps;
+		ps = con.prepareStatement("SELECT * FROM empleados WHERE id_emp=?");
+		ps.setInt(1, id_empleado);
+		ResultSet rs = ps.executeQuery();
+		while (rs.next()) {
+			EmpleadoDto empleado = new EmpleadoDto();
+			empleado.setId_empleado(rs.getInt("id_emp"));
+			empleado.setNom_empleado(rs.getString("nom_emp"));
+			empleado.setRol_empleado(rs.getInt("rol_emp"));	
+			listaEmpleado.add(empleado);
+		}
+		empleadoListaDto.setLista(listaEmpleado);
+		rs.close();
+		return listaEmpleado;
+	}
+	public void consultarEmpleadoVentas(EmpleadoListaDto empleadoListaDto) throws Exception {
+		Connection con= new Conexion().obtenerConexion();
+		PreparedStatement ps;
+		ps= con.prepareStatement("SELECT id_emp, nom_emp from empleados, ventas where id_emp=emp_ventas;");
+		Map<String, Object> empleado= new LinkedHashMap<String, Object>();
+		ResultSet rs= ps.executeQuery();
+		while(rs.next()){
+			empleado.put(rs.getString("nom_emp"), rs.getInt("id_emp"));			
+		}
+		rs.close();
+		empleadoListaDto.setListaEmpleado(empleado);
 	}
 }

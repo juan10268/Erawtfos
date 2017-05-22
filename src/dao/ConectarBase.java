@@ -14,7 +14,7 @@ public class ConectarBase {
 			
 		}catch(Exception e){
 			return null;
-//			throw new SQLException("Esta es una excepcion en el getConection: "+e.getMessage());
+	//		throw new SQLException("Esta es una excepcion en el getConection: "+e.getMessage());
 		}
 	}	
 }

@@ -10,24 +10,67 @@
         <h:head>
             <f:facet name="first">
                 <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
-                <title>Ingreso producto </title>
+                <title>Tienda Cristhian - Manejo de productos</title>
             </f:facet>
         </h:head>
-        <h:body>
-         <h:form id="form" > 
-            <p:panel id= "login" header="registro de productos">
-	   		<p:panelGrid columns= "1">
-	   			<h:outputLabel value="id producto:" /> 
-            	<p:inputText value="#{productosDto.producto_id}" required="true"/>   
-            	<h:outputLabel value="nombre producto:" />                     
-            	<p:password value="#{productosDto.producto_nombre}" required="true"/> 
-            	<h:outputLabel value="cantidad producto:" />                     
-            	<p:password value="#{productosDto.producto_cantidad}" required="true"/>               
-            	<p:commandButton value="Ingresar" id="Ingresar" action="#{producto.loginProducto(productosDto)}">
-            	</p:commandButton>              
-            </p:panelGrid>
+        <h:body onload="#{producto.consultarProducto(productosListaDto)}">
+        <h:form id="formInicio">
+          	<p:growl id="msgs" showDetail="true" />
+            <p:panel widgetVar="inicio" style="width:50%; margin-top:75px; margin-left:350px; text-align:center;" header="Consulta de ventas en la aplicacion">
+          	  <p:commandButton value="Agregar productos" ondblclick="PF('inicio').close();PF('ingresar').show()"/>
+          	  <p:commandButton value="Eliminar productos" ondblclick="PF('inicio').close(); PF('eliminar').show()"/>
+          	  <p:commandButton value="Listar los productos" ondblclick="PF('inicio').close(); PF('total_prod').show()"/>           	  
             </p:panel>
-        </h:form>
+        </h:form> 
+        <h:form id="prod_inicio"> 
+            <p:panel widgetVar="ingresar" id="ingresar" style="display:none;width:50%; margin-top:75px; margin-left:350px; text-align:center;" header="Registro de productos - Tienda Cristhian">           
+	   	      <p:panelGrid style="width:100%; text-align:center" columns= "1">
+	   			<h:outputLabel value="Codigo del producto:" /> 
+            	<p:inputText id="pro_name" style="width:100%; text-align:center" value="#{productosDto.producto_id}" required="true">
+            	<p:ajax event="blur" listener="#{producto.consultarId(productosDto)}" update=":prod_inicio:pro_name"/>
+               </p:inputText>  
+            	<h:outputLabel value="Nombre del producto:" />                     
+            	<p:inputText style="width:100%; text-align:center" value="#{productosDto.producto_nombre}" required="true"/> 
+            	<h:outputLabel value="Cantidad del producto:" />                     
+            	<p:inputText style="width:100%; text-align:center" value="#{productosDto.producto_cantidad}" required="true"/>  
+            	<h:outputLabel value="Valor del producto:" />                     
+            	<p:inputText style="width:100%; text-align:center" value="#{productosDto.producto_valor}" required="true"/>              
+            	<p:commandButton value="Ingresar" action="#{producto.agregar(productosDto)}"/>            	
+            </p:panelGrid>
+           </p:panel>
+        </h:form>        
+        <h:form id="formeliminar"> 
+            <p:panel widgetVar="eliminar" style="display:none; width:40%; margin-top:75px; margin-left:400px; text-align:center;" header="Eliminar productos - Tienda Cristhian">
+	   		 <p:panelGrid style="width:100%; text-align:center" columns= "1">
+	   		   <h:outputText value="Producto: "/>
+	   		   <p:selectOneMenu value="#{productosDto.producto_id}" rendered="true">
+	   		   		<f:selectItem itemLabel="Seleccione el producto:"/>
+	   		   		<f:selectItems value="#{productosListaDto.listaProducto}"/>
+	   		   </p:selectOneMenu>	
+	   		   <p:commandButton value="Eliminar" action="#{producto.eliminar(productosDto)}"/>				
+             </p:panelGrid>
+            </p:panel> 
+          </h:form>            
        </h:body>
+       <h:body onload="#{producto.listartodosProductos(productosListaDto)}">
+        <h:form id="listaproductos">           	
+            <p:panel widgetVar="total_prod" id="total_prod" style="width:60%; margin-top:75px; margin-left:300px; text-align:center; display:none" header="Mostrar productos - Tienda Cristhian">
+	   		 <p:dataTable var="listaproductos" value="#{productosListaDto.lista}" widgetVar="listainfo" id="lista" rendered="true" style="width:100%; text-align:center">				
+						<p:column headerText="ID">
+							<h:outputText value="#{listaproductos.producto_id}" />
+						</p:column>
+						<p:column headerText="Nombre" filterBy="#{listaproductos.producto_nombre}">
+							<h:outputText value="#{listaproductos.producto_nombre}"/>
+						</p:column>	
+						<p:column headerText="Cantidad">
+							<h:outputText value="#{listaproductos.producto_cantidad}"/>
+						</p:column>	
+						<p:column headerText="Valor">
+							<h:outputText value="#{listaproductos.producto_valor}"/>
+						</p:column>	
+			</p:dataTable>
+		   </p:panel>
+	     </h:form>
+	   </h:body>
     </f:view>
 </html>

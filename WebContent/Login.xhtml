@@ -10,19 +10,18 @@
         <h:head>
             <f:facet name="first">
                 <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
-                <title>Tienda Cristhian - Inicio de sesion </title>
+                <title>Tienda Cristhian - Inicio de sesión </title>
             </f:facet>
         </h:head>
         <h:body>
-         <h:form id="form" > 
-            <p:panel id= "login" header="Iniciar sesion en la aplicación">
-	   		<p:panelGrid columns= "1">
-	   			<h:outputLabel for="usuario" value="Identificacion de usuario:" /> 
-            	<p:inputText id="usuario" value="#{empleadoDto.id_empleado}" required="true"/>                        
+         <h:form id="form"> 
+            <p:panel id="login" style="width:40%; margin-top:190px; margin-left:400px; text-align:center;" header="Iniciar sesion en la aplicacion">
+	   		<p:panelGrid style="width:100%; text-align:center" columns= "1">
+	   			<h:outputLabel for="usuario" value="Identificación de usuario:" /> 
+            	<p:inputText id="usuario" style="width:100%; text-align:center;" value="#{empleadoDto.id_empleado}" required="true"/>                        
             	<h:outputLabel for="pass" value="Contrasena:" /> 
-            	<p:password id="pass" value="#{empleadoDto.pass_empleado}" required="true"/>            
-            	<p:commandButton value="Ingresar" id="Ingresar" action="#{empleado.loginEmpleado(empleadoDto)}">
-            	</p:commandButton>              
+            	<p:password id="pass" style="width:100%; text-align:center;" value="#{empleadoDto.pass_empleado}" required="true"/>            
+            	<p:commandButton value="Ingresar" id="Ingresar" update=":form:login" action="#{empleado.loginEmpleado(empleadoDto)}"/>            	
             </p:panelGrid>
             </p:panel>
         </h:form>

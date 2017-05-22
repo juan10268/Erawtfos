@@ -3,83 +3,150 @@ package dao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 import dto.ProductosDto;
+import dto.ProductosListaDto;
 
 public class ProductosDao {
-	ProductosDto productoDto= new ProductosDto();	
-	public String comprobarproductoId(int id) throws Exception {
-		Connection con = new Conexion().obtenerConexion();
-		PreparedStatement pst;
-		pst= con.prepareStatement("SELECT * FROM producto where idProduc =?");
-		pst.setInt(1, id);
-		ResultSet rs= pst.executeQuery();
-		while(rs.next()){
-			productoDto.setProducto_nombre(rs.getString("nomProduc"));			
-		}
-		String nom_produc= productoDto.getProducto_nombre();		
-		return nom_produc;
-	}
-	public boolean IngresarProducto(ProductosDto producto, Connection con){
-		try {
-			String sql = "INSERT INTO `cristhian`.`productos` (`id_producto`, `nombre_producto`, `cantidad_producto`) VALUES (?,?,?)" ;		
-			PreparedStatement sentencia=null;
-			int rss=0;	
-			sentencia = (PreparedStatement) con.prepareStatement(sql);	
-	       	sentencia.setInt(1, producto.getProducto_id());
-	    	sentencia.setString(2, producto.getProducto_nombre());
-	    	sentencia.setInt(3, producto.getProducto_cantidad());
-	    	sentencia.setInt(4, producto.getProducto_valor());
-	    	rss=sentencia.executeUpdate();		     
+	ProductosDto productosDto= new ProductosDto();	
+
+	public boolean agregar(ProductosDto producto) throws Exception {
+		Connection con= new Conexion().obtenerConexion();
+		try {			
+			PreparedStatement ps;
+			ps=con.prepareStatement("INSERT INTO productos (id_producto, nombre_producto, cantidad_producto, valor_producto)" 
+					+ " VALUES (?,?,?,?)") ;
+			ps.setInt(1, producto.getProducto_id());
+	    	ps.setString(2, producto.getProducto_nombre());
+	    	ps.setInt(3, producto.getProducto_cantidad());
+	    	ps.setInt(4, producto.getProducto_valor());
+	    	ps.executeUpdate();		     
 			return true;
-		} catch (Exception e) {
-			System.out.print(e);
+		}
+		catch (Exception e) {
 			return false;
 		}
 	}
-	public boolean agregar(ProductosDto producto, Connection con) {
-		try {
-			String sql = "INSERT INTO producto (idProduc,nomProduc,cantiProduc,valorProducto" 
-					+ " VALUES (?,?,?,?)" ;
-			PreparedStatement sentencia=null;
-			int rss=0;	
-			sentencia = (PreparedStatement) con.prepareStatement(sql);	
-	       	sentencia.setInt(1, producto.getProducto_id());
-	    	sentencia.setString(2, producto.getProducto_nombre());
-	    	sentencia.setInt(3, producto.getProducto_cantidad());
-	    	sentencia.setInt(4, producto.getProducto_valor());
-	    	rss=sentencia.executeUpdate();		     
-			return true;
-		} catch (Exception e) {
-			System.out.print(e);
-			return false;
-		}
-	}
-	public boolean eliminar(ProductosDto ProductoDto, Connection con)
-			throws SQLException {
-		String sql = "DELETE FROM producto  WHERE idProduc= ?";		
+	public boolean eliminar(ProductosDto productos) throws Exception {
+		Connection con= new Conexion().obtenerConexion();
+		String sql = "DELETE FROM productos WHERE id_producto= ?";		
 		PreparedStatement instruccion = con.prepareStatement(sql);
-		instruccion.setInt(1, ProductoDto.getProducto_id());
+		instruccion.setInt(1, productos.getProducto_id());
 		if (instruccion.executeUpdate() >= 1) {
 			return true;
 		} else {
 			return false;
 		}
 	}
-	public boolean modificar(ProductosDto producto, Connection con)
-			throws SQLException {
-		String sql = "UPDATE `tienda`.`producto` SET `idProduc`=?, `nomProduc`=? WHERE `cantiProduc`=?;`valorProducto`";
-		PreparedStatement sentencia=null;
-		int rss=0;
-		sentencia.setInt(1, producto.getProducto_id());
-    	sentencia.setString(2, producto.getProducto_nombre());
-    	sentencia.setInt(3, producto.getProducto_cantidad());
-    	sentencia.setInt(4, producto.getProducto_valor());
-		if (sentencia.executeUpdate() >= 1) {
-			return true;
-		} else {
-			return false;
+	public boolean compras(ProductosDto productos) throws Exception {
+		Connection con = new Conexion().obtenerConexion();
+		PreparedStatement ps;
+		ps= con.prepareStatement("UPDATE productos SET cantidad_producto = cantidad_producto + ? WHERE id_producto=?");
+		ps.setInt(1, productos.getProducto_cantidad());
+		ps.setInt(2, productos.getProducto_id());    	  	
+		if (ps.executeUpdate()>=1) {
+		   return true;
+	    } else {
+		    return false;
+	    }
+	}
+	public void consultarProducto(ProductosListaDto productosListaDto) throws Exception  {
+		Connection con= new Conexion().obtenerConexion();
+		PreparedStatement ps;
+		ps= con.prepareStatement("SELECT * FROM productos");
+		Map<String, Object> producto= new LinkedHashMap<String, Object>();
+		ResultSet rs= ps.executeQuery();
+		while(rs.next()){
+			producto.put(rs.getString("nombre_producto"), rs.getInt("id_producto"));			
 		}
+		rs.close();
+		productosListaDto.setListaProducto(producto);
+	}
+	public String consultarIdProducto(int id_producto) throws Exception {
+		Connection con = new Conexion().obtenerConexion();
+		PreparedStatement pst;
+		pst= con.prepareStatement("SELECT * FROM productos where id_producto=?");
+		pst.setInt(1, id_producto);
+		ResultSet rs= pst.executeQuery();
+		while(rs.next()){
+			productosDto.setProducto_nombre(rs.getString("nombre_producto"));	
+		}
+		String nom_produc= productosDto.getProducto_nombre();
+		return nom_produc;
+	}
+	public List<ProductosDto> consultartodosProductos(ProductosListaDto productosListaDto) throws Exception {
+		Connection con= new Conexion().obtenerConexion();
+		List<ProductosDto> listaproductos = new ArrayList<ProductosDto>();
+		PreparedStatement ps;
+		ps = con.prepareStatement("SELECT * FROM productos");
+		ResultSet rs = ps.executeQuery();
+		while (rs.next()) {
+			ProductosDto producto = new ProductosDto();
+			producto.setProducto_cantidad(rs.getInt("cantidad_producto"));
+			producto.setProducto_id(rs.getInt("id_producto"));
+			producto.setProducto_nombre(rs.getString("nombre_producto"));
+			producto.setProducto_valor(rs.getInt("valor_producto"));
+			listaproductos.add(producto);
+		}
+		productosListaDto.setLista(listaproductos);
+		rs.close();
+		return listaproductos;
+	}
+	public ProductosDto consultarProductosporId(ProductosDto productoDto) throws Exception {
+		Connection con= new Conexion().obtenerConexion();
+		ProductosDto producto = new ProductosDto();
+		PreparedStatement ps;
+		ps = con.prepareStatement("SELECT * FROM productos where id_producto=?");
+		ps.setInt(1, productoDto.getProducto_id());
+		ResultSet rs = ps.executeQuery();
+		while (rs.next()) {
+			producto.setProducto_cantidad(productoDto.getProducto_cantidad());
+			producto.setProducto_id(rs.getInt("id_producto"));
+			producto.setProducto_nombre(rs.getString("nombre_producto"));
+			producto.setProducto_valor(rs.getInt("valor_producto")* productoDto.getProducto_cantidad());			
+		}
+		rs.close();
+		return producto;
+	}
+	public boolean disminuirProducto(ProductosDto productos) throws Exception {
+		Connection con = new Conexion().obtenerConexion();
+		PreparedStatement ps;
+		ps=con.prepareStatement("UPDATE productos SET cantidad_producto = cantidad_producto-? where id_producto=?");
+		ps.setInt(1, productos.getProducto_cantidad());
+		ps.setInt(2, productos.getProducto_id());    	  	
+		if (ps.executeUpdate()>=1) {
+		   return true;
+	    } else {
+		    return false;
+	    }
+	}
+	public int inventariodisponibleporId(ProductosDto productoDto) throws Exception {
+		Connection con = new Conexion().obtenerConexion();
+		PreparedStatement ps;
+		ps= con.prepareStatement("SELECT * FROM productos where id_producto=?");
+		ps.setInt(1, productoDto.getProducto_id());
+		int canti_produc = 0;
+		ResultSet rs = ps.executeQuery();
+		while(rs.next()){			
+			productosDto.setProducto_cantidad(rs.getInt("cantidad_producto"));
+			canti_produc= productosDto.getProducto_cantidad();
+		}		
+		return canti_produc;
+	}
+	public boolean aumentarProducto(ProductosDto productos) throws Exception {
+		Connection con = new Conexion().obtenerConexion();
+		PreparedStatement ps;
+		ps=con.prepareStatement("UPDATE productos SET cantidad_producto = cantidad_producto +? where id_producto=?");
+		ps.setInt(1, productos.getProducto_cantidad());
+		ps.setInt(2, productos.getProducto_id());    	  	
+		if (ps.executeUpdate()>=1) {
+		   return true;
+	    } else {
+		    return false;
+	    }
 	}
 }

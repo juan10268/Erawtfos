@@ -1,9 +1,11 @@
 package dto;
 
+import java.io.Serializable;
+
 import javax.faces.bean.ManagedBean;
 
 @ManagedBean
-public class ProductosDto {
+public class ProductosDto implements Serializable{
 	private int producto_id, producto_cantidad, producto_valor;
 	private String producto_nombre;
 	

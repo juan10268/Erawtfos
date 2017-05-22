@@ -1,11 +1,13 @@
 package dto;
 
 import java.io.Serializable;
+
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
 
 @ManagedBean
+@SessionScoped
 public class EmpleadoDto implements Serializable{
-	
 	private int id_empleado, rol_empleado;
 	private String nom_empleado, pass_empleado;
 		

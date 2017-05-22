@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns ="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+	<f:view contentType="text/html">
+        <h:head>
+            <f:facet name="first">
+                <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+                <title>Tienda Cristhian - Facturacion</title>
+            </f:facet>
+		</h:head> 		 
+	</f:view>
+	<h:body onload="#{producto.consultarProducto(productosListaDto)}">
+	  <h:form id="facturacion">
+	  	<p:growl id="msgs"/>	  	  
+	  	<p:panel widgetVar="mostrar" style="width:40%; margin-top:30px; margin-left:400px; text-align:center;" header="Mostrar ventas por empleado - Tienda Cristhian">
+	   		 <p:panelGrid style="width:100%; text-align:center" columns= "1">
+	   		   <h:outputLabel value="Identidad del vendedor:" />
+	   		   <p:inputText style="width:50%; text-align:center" value="#{empleadoDto.id_empleado}" readonly="true" required="true"/>	
+	   		   <h:outputText value="Documento:"/>
+	   		   <p:selectOneMenu value="#{productosDto.producto_id}" rendered="true">
+	   		   		<f:selectItem itemLabel="Seleccione el producto" itemValue=""/>
+	   		   		<f:selectItems value="#{productosListaDto.listaProducto}"/>	   		   		
+	   		   </p:selectOneMenu>
+	   		   <h:outputLabel value="Cantidad del producto:" />                     
+                 <p:inputText style="width:50%; text-align:center" value="#{productosDto.producto_cantidad}" required="true"/> 
+               </p:panelGrid> 	
+               <p:panelGrid id="panelbutton" style="width:100%; text-align:center" columns="2">               
+	   		   <p:commandButton update=":facturacion:lista , :facturacion:infovalor" action="#{producto.canti_productoVenta(productosDto)}" value="Facturar producto" actionListener="#{producto.facturarProductoVenta(productosDto, productosListaDto)}"/>
+	   		   <p:commandButton update=":facturacion" value="Facturar Compra" action="#{ventas.agregarVentas(empleadoDto, productosListaDto)}"/>	   			
+	   		</p:panelGrid>
+	   	</p:panel>	  
+	    <p:outputPanel id="produc_vista" widgetVar="mostrar" style="width:70%; margin-top:30px; margin-left:220px; text-align:center;" header="Mostrar Informacion de empleado - Tienda Cristhian">
+	   	  <p:dataTable widgetVar="listainfo" value="#{productosListaDto.lista}" var="prod" id="lista" rendered="true" emptyMessage="Ingrese un producto" style="width:100%; text-align:center;">	 
+	  	   <p:column headerText="Codigo del producto">                
+              <h:outputText value="#{prod.producto_id}" />
+            </p:column>
+           <p:column headerText="Nombre del producto">                
+              <h:outputText value="#{prod.producto_nombre}" />
+           </p:column> 
+           <p:column headerText="Cantidad del producto">                
+              <h:outputText value="#{prod.producto_cantidad}" />
+           </p:column>
+           <p:column headerText="Valor del producto">                
+              <h:outputText value="#{prod.producto_valor}" />
+           </p:column>        	           		 	
+	  	 </p:dataTable>
+	  	 <p:panelGrid id="infovalor" style="margin-top:10px; width:100%; text-align:center" columns="2">
+			<h:outputLabel value="Valor de la compra:" /> 
+            <p:inputText id="num_ventas" style="width:50%; text-align:center;" readonly="true" value="#{producto.valorfacturar(productosListaDto)}"/>
+            <h:outputLabel value="Productos en la compra:" /> 
+            <p:inputText id="valor_ventas" style="width:50%; text-align:center;" readonly="true" value="#{producto.cantidadProductos(productosListaDto)}"/>            
+            </p:panelGrid>            		  	
+	   </p:outputPanel>	  
+	  </h:form>	
+	</h:body>	
+</html>			          
+  

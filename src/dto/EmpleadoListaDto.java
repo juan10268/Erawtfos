@@ -1,29 +1,42 @@
 package dto;
 
 import java.io.Serializable;
-import javax.faces.bean.ManagedBean;
 import java.util.List;
+import java.util.Map;
+
+import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 
 @ManagedBean
 @ViewScoped
 public class EmpleadoListaDto implements Serializable{
+	private Map<String, Object> listaEmpleado;
+	private EmpleadoDto seleccionaEmpleado;
+	private String empleado;
+	private List<EmpleadoDto> lista;
 	
-	private List<EmpleadoDto> empleado;
-	private EmpleadoDto selectedEmpleado;
-	
-	public List<EmpleadoDto> getEmpleado() {
+	public Map<String, Object> getListaEmpleado() {
+		return listaEmpleado;
+	}
+	public List<EmpleadoDto> getLista() {
+		return lista;
+	}
+	public void setLista(List<EmpleadoDto> lista) {
+		this.lista = lista;
+	}
+	public void setListaEmpleado(Map<String, Object> listaEmpleado) {
+		this.listaEmpleado = listaEmpleado;
+	}
+	public EmpleadoDto getSeleccionaEmpleado() {
+		return seleccionaEmpleado;
+	}
+	public void setSeleccionaEmpleado(EmpleadoDto seleccionaEmpleado) {
+		this.seleccionaEmpleado = seleccionaEmpleado;
+	}
+	public String getEmpleado() {
 		return empleado;
 	}
-	public void setEmpleado(List<EmpleadoDto> empleado) {
+	public void setEmpleado(String empleado) {
 		this.empleado = empleado;
 	}
-	public EmpleadoDto getSelectedEmpleado() {
-		return selectedEmpleado;
-	}
-	public void setSelectedEmpleado(EmpleadoDto selectedEmpleado) {
-		this.selectedEmpleado = selectedEmpleado;
-	}
-	
-
 }

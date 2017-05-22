@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns ="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+	
+	<f:view contentType="text/html">
+        <h:head>
+            <f:facet name="first">
+                <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+                <title>Tienda Cristhian - Manejo de empleados </title>
+            </f:facet>
+        </h:head>
+        <h:body onload="#{empleado.consultarEmpleado(empleadoListaDto)}">
+          <h:form id="formInicio">
+          	<p:growl id="msgs" showDetail="true" />
+            <p:panel widgetVar="eleccion" style="width:70%; margin-top:90px; margin-left:230px; text-align:center;" header="Manejo de empleados en la aplicacion">
+          	  <p:commandButton value="Ingresar Empleado" id="Ingresar" ondblclick="PF('eleccion').close();PF('registro').show()"/>
+          	  <p:commandButton value="Actualizar Empleado" id="Actualizar" ondblclick="PF('eleccion').close(); PF('actualizacion').show()"/>
+          	  <p:commandButton value="Eliminar Empleado" id="Eliminar" ondblclick="PF('eleccion').close(); PF('eliminar').show()"/>          	  
+           	  <p:commandButton value="Mostrar Info Empleado" id="Mostrar" ondblclick="PF('eleccion').close(); PF('mostrar').show()"/>          	  	
+            </p:panel>
+           </h:form>
+           <h:form id="formingresar">           	
+            <p:panel widgetVar="registro" id="registrar" style="width:50%; margin-top:90px; margin-left:350px; text-align:center; display:none" header="Registrar empleado - Tienda Cristhian">
+	   		 <p:panelGrid style="width:100%; text-align:center" columns= "1">
+	   		   <h:outputLabel value="Identificacion del empleado:" /> 
+               <p:inputText id="regid" style="width:100%; text-align:center;" value="#{empleadoDto.id_empleado}" required="true">
+               <p:ajax event="blur" listener="#{empleado.consultarId(empleadoDto)}" update="formingresar:regid"/>
+               </p:inputText>                        
+               <h:outputLabel value="Nombre del empleado:" /> 
+               <p:inputText id="regname" style="width:100%; text-align:center;" value="#{empleadoDto.nom_empleado}" required="true"/>                        
+               <h:outputLabel value="Rol del empleado:" /> 
+               <p:inputText id="regrol" style="width:100%; text-align:center;" value="#{empleadoDto.rol_empleado}" required="true"/>                        
+               <h:outputLabel value="Contrasena:" /> 
+               <p:password id="regpass" style="width:100%; text-align:center;" value="#{empleadoDto.pass_empleado}" required="true"/>            
+               <p:commandButton value="Registrar Empleado" resetValues="true" action="#{empleado.insertarEmpleado(empleadoDto)}"/>            	             
+             </p:panelGrid>
+            </p:panel>
+            </h:form>
+            <h:form id="formactuali">
+            <p:panel widgetVar="actualizacion" style="display:none; width:40%; margin-top:90px; margin-left:400px; text-align:center;" header="Actualizar empleado - Tienda Cristhian">
+	   		 <p:panelGrid style="width:100%; text-align:center" columns="1">
+	 			<h:outputText value="Documento: "/>
+				<p:selectOneMenu value="#{empleadoDto.id_empleado}" rendered="true">
+            	  <f:selectItem itemLabel="Seleccione el empleado"/>
+            	  <f:selectItems value="#{empleadoListaDto.listaEmpleado}" />
+       	 		</p:selectOneMenu>
+       	 		<h:outputLabel value="Rol de empleado:" /> 
+               	<p:inputText id="actrol" style="width:100%; text-align:center;" value="#{empleadoDto.rol_empleado}" required="true"/>                        
+               	<h:outputLabel value="Contraseña de empleado:" />               	
+               	<p:password id="actpass" style="width:100%; text-align:center;" value="#{empleadoDto.pass_empleado}" required="true"/>            
+               	<p:commandButton value="Actualizar empleado" id="actualizar" action="#{empleado.actualizarEmpleado(empleadoDto)}"/>            	             
+             </p:panelGrid>
+            </p:panel>
+           </h:form>
+           <h:form id="formeliminar"> 
+            <p:panel widgetVar="eliminar" id="elimi_emple" style="display:none;width:40%; margin-top:90px; margin-left:400px; text-align:center;" header="Eliminar empleado - Tienda Cristhian">
+	   		 <p:panelGrid style="width:100%; text-align:center" columns= "1">
+	   		   <h:outputText value="Documento: "/>
+	   		   <p:selectOneMenu value="#{empleadoDto.id_empleado}" rendered="true">
+	   		   		<f:selectItem itemLabel="Seleccione el empleado"/>
+	   		   		<f:selectItems value="#{empleadoListaDto.listaEmpleado}"/>
+	   		   </p:selectOneMenu>	   				
+	   		   <p:commandButton value="Eliminar Empleado" id="eliminar" action="#{empleado.eliminarEmpleado(empleadoDto)}"/>            	             
+             </p:panelGrid>
+            </p:panel>                        
+          </h:form>
+         <h:form id="formmostrar"> 
+            <p:panel widgetVar="mostrar" style="display:none;width:40%; margin-top:90px; margin-left:400px; text-align:center;" header="Mostrar Informacion de empleado - Tienda Cristhian">
+	   		 <p:panelGrid style="width:100%; text-align:center" columns= "1">
+	   		   <h:outputText value="Documento:"/>
+	   		   <p:selectOneMenu value="#{empleadoDto.id_empleado}" rendered="true">
+	   		   		<f:selectItem itemLabel="Seleccione el empleado" itemValue=""/>
+	   		   		<f:selectItems value="#{empleadoListaDto.listaEmpleado}"/>
+	   		   		<p:ajax event="change" update=":formmostrar:lista" listener="#{empleado.consultarInfo(empleadoDto, empleadoListaDto)}"/>
+	   		   </p:selectOneMenu>
+	   		  </p:panelGrid>            
+              <p:dataTable var="listaempleado" value="#{empleadoListaDto.lista}" widgetVar="listainfo" id="lista" rendered="true" style="width:100%; margin-top:10px; text-align:center;" emptyMessage="Seleccione el empleado">				
+						<p:column headerText="Nombre">
+							<h:outputText value="#{listaempleado.id_empleado}" />
+						</p:column>
+						<p:column headerText="ID">
+							<h:outputText value="#{listaempleado.nom_empleado}" />
+						</p:column>
+						<p:column headerText="Rol">
+							<h:outputText value="#{listaempleado.rol_empleado}" />
+						</p:column> 
+			</p:dataTable> 
+			</p:panel>
+         </h:form>	  
+     </h:body> 
+</f:view>
+</html>
