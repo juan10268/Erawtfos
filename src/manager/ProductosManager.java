@@ -1,45 +1,59 @@
 package manager;
 
-import dao.ConectarBase;
+import java.sql.Connection;
+
+import javax.sql.DataSource;
+
 import dao.ProductosDao;
 import dto.ProductosDto;
 import dto.ProductosListaDto;
+import util.PersistUtil;
 
 public class ProductosManager {
-	
+	private DataSource dataSource;	
 	ProductosDao productosDao= new ProductosDao();
-	ConectarBase con = new ConectarBase();
+	
+	public ProductosManager(){
+		dataSource= PersistUtil.getDataSource();
+	}
 	
 	public boolean agregar(ProductosDto productosDto) throws Exception{
-		return productosDao.agregar(productosDto);
+		Connection con= dataSource.getConnection();
+		return productosDao.agregar(productosDto, con);
 	}
 	public void consultarProducto(ProductosListaDto productosListaDto) throws Exception {
-	    productosDao.consultarProducto(productosListaDto);		
+		Connection con= dataSource.getConnection();
+	    productosDao.consultarProducto(productosListaDto, con);		
 	}
 	public boolean eliminar(ProductosDto productosDto) throws Exception {
-		return productosDao.eliminar(productosDto);
+		Connection con= dataSource.getConnection();
+		return productosDao.eliminar(productosDto, con);
 	}	
-	public String consultarIdProducto(int id_producto) throws Exception {
-		if(productosDao.consultarIdProducto(id_producto)!=null){
-			return productosDao.consultarIdProducto(id_producto); 			
+	public String consultarIdProducto(ProductosDto productosDto) throws Exception {
+		Connection con= dataSource.getConnection();
+		if(productosDao.consultarIdProducto(productosDto, con)!=null){
+			return productosDao.consultarIdProducto(productosDto, con); 			
 		}else{
 			return null;
 		}
 	}
 	public void consultartodosProductos(ProductosListaDto productosListaDto) throws Exception {
-		productosDao.consultartodosProductos(productosListaDto);
+		Connection con= dataSource.getConnection();	
+		productosDao.consultartodosProductos(productosListaDto, con);
 	}
 	public ProductosDto facturarProducto(ProductosDto productoDto) throws Exception {
-		return productosDao.consultarProductosporId(productoDto);			
+		Connection con= dataSource.getConnection();
+		return productosDao.consultarProductosporId(productoDto, con);			
 	}
 	public boolean restriccioninventario(ProductosDto productoDto) throws Exception{
-		int can_pedido=productosDao.consultarProductosporId(productoDto).getProducto_cantidad();
-		int can_disponible= productosDao.inventariodisponibleporId(productoDto);
+		Connection con= dataSource.getConnection();
+		int can_pedido=productosDao.consultarProductosporId(productoDto, con).getProducto_cantidad();
+		int can_disponible= productosDao.inventariodisponibleporId(productoDto, con);
 		if(can_pedido>can_disponible){
 			return false;
 		}
 		else{
-			productosDao.disminuirProducto(productoDto);
+			productosDao.disminuirProducto(productoDto, con);
 			return true;
 		}
 	}
@@ -60,9 +74,11 @@ public class ProductosManager {
 		return suma;
 	}
 	public int inventariodisponibleporId(ProductosDto productoDto) throws Exception {
-		return productosDao.inventariodisponibleporId(productoDto);		
+		Connection con= dataSource.getConnection();
+		return productosDao.inventariodisponibleporId(productoDto, con);
 	}
-	public void pedidoInventario(ProductosDto productos) throws Exception{
-		productosDao.aumentarProducto(productos);
+	public void pedidoInventario(ProductosDto productosDto) throws Exception{
+		Connection con= dataSource.getConnection();
+		productosDao.aumentarProducto(productosDto, con);
 	}
 }

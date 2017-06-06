@@ -14,8 +14,7 @@ import dto.ProductosListaDto;
 public class ProductosDao {
 	ProductosDto productosDto= new ProductosDto();	
 
-	public boolean agregar(ProductosDto producto) throws Exception {
-		Connection con= new Conexion().obtenerConexion();
+	public boolean agregar(ProductosDto producto, Connection con) throws Exception {
 		try {			
 			PreparedStatement ps;
 			ps=con.prepareStatement("INSERT INTO productos (id_producto, nombre_producto, cantidad_producto, valor_producto)" 
@@ -31,8 +30,7 @@ public class ProductosDao {
 			return false;
 		}
 	}
-	public boolean eliminar(ProductosDto productos) throws Exception {
-		Connection con= new Conexion().obtenerConexion();
+	public boolean eliminar(ProductosDto productos, Connection con) throws Exception {
 		String sql = "DELETE FROM productos WHERE id_producto= ?";		
 		PreparedStatement instruccion = con.prepareStatement(sql);
 		instruccion.setInt(1, productos.getProducto_id());
@@ -42,8 +40,7 @@ public class ProductosDao {
 			return false;
 		}
 	}
-	public boolean compras(ProductosDto productos) throws Exception {
-		Connection con = new Conexion().obtenerConexion();
+	public boolean compras(ProductosDto productos, Connection con) throws Exception {
 		PreparedStatement ps;
 		ps= con.prepareStatement("UPDATE productos SET cantidad_producto = cantidad_producto + ? WHERE id_producto=?");
 		ps.setInt(1, productos.getProducto_cantidad());
@@ -54,8 +51,7 @@ public class ProductosDao {
 		    return false;
 	    }
 	}
-	public void consultarProducto(ProductosListaDto productosListaDto) throws Exception  {
-		Connection con= new Conexion().obtenerConexion();
+	public void consultarProducto(ProductosListaDto productosListaDto, Connection con) throws Exception  {
 		PreparedStatement ps;
 		ps= con.prepareStatement("SELECT * FROM productos");
 		Map<String, Object> producto= new LinkedHashMap<String, Object>();
@@ -66,11 +62,10 @@ public class ProductosDao {
 		rs.close();
 		productosListaDto.setListaProducto(producto);
 	}
-	public String consultarIdProducto(int id_producto) throws Exception {
-		Connection con = new Conexion().obtenerConexion();
+	public String consultarIdProducto(ProductosDto productosDto, Connection con) throws Exception {
 		PreparedStatement pst;
 		pst= con.prepareStatement("SELECT * FROM productos where id_producto=?");
-		pst.setInt(1, id_producto);
+		pst.setInt(1, productosDto.getProducto_id());
 		ResultSet rs= pst.executeQuery();
 		while(rs.next()){
 			productosDto.setProducto_nombre(rs.getString("nombre_producto"));	
@@ -78,8 +73,7 @@ public class ProductosDao {
 		String nom_produc= productosDto.getProducto_nombre();
 		return nom_produc;
 	}
-	public List<ProductosDto> consultartodosProductos(ProductosListaDto productosListaDto) throws Exception {
-		Connection con= new Conexion().obtenerConexion();
+	public List<ProductosDto> consultartodosProductos(ProductosListaDto productosListaDto, Connection con) throws Exception {
 		List<ProductosDto> listaproductos = new ArrayList<ProductosDto>();
 		PreparedStatement ps;
 		ps = con.prepareStatement("SELECT * FROM productos");
@@ -96,8 +90,7 @@ public class ProductosDao {
 		rs.close();
 		return listaproductos;
 	}
-	public ProductosDto consultarProductosporId(ProductosDto productoDto) throws Exception {
-		Connection con= new Conexion().obtenerConexion();
+	public ProductosDto consultarProductosporId(ProductosDto productoDto, Connection con) throws Exception {
 		ProductosDto producto = new ProductosDto();
 		PreparedStatement ps;
 		ps = con.prepareStatement("SELECT * FROM productos where id_producto=?");
@@ -112,8 +105,7 @@ public class ProductosDao {
 		rs.close();
 		return producto;
 	}
-	public boolean disminuirProducto(ProductosDto productos) throws Exception {
-		Connection con = new Conexion().obtenerConexion();
+	public boolean disminuirProducto(ProductosDto productos, Connection con) throws Exception {
 		PreparedStatement ps;
 		ps=con.prepareStatement("UPDATE productos SET cantidad_producto = cantidad_producto-? where id_producto=?");
 		ps.setInt(1, productos.getProducto_cantidad());
@@ -124,8 +116,7 @@ public class ProductosDao {
 		    return false;
 	    }
 	}
-	public int inventariodisponibleporId(ProductosDto productoDto) throws Exception {
-		Connection con = new Conexion().obtenerConexion();
+	public int inventariodisponibleporId(ProductosDto productoDto, Connection con) throws Exception {
 		PreparedStatement ps;
 		ps= con.prepareStatement("SELECT * FROM productos where id_producto=?");
 		ps.setInt(1, productoDto.getProducto_id());
@@ -137,8 +128,7 @@ public class ProductosDao {
 		}		
 		return canti_produc;
 	}
-	public boolean aumentarProducto(ProductosDto productos) throws Exception {
-		Connection con = new Conexion().obtenerConexion();
+	public boolean aumentarProducto(ProductosDto productos, Connection con) throws Exception {
 		PreparedStatement ps;
 		ps=con.prepareStatement("UPDATE productos SET cantidad_producto = cantidad_producto +? where id_producto=?");
 		ps.setInt(1, productos.getProducto_cantidad());

@@ -13,12 +13,11 @@ import dto.VentasDto;
 import dto.VentasListasDto;
 
 public class VentasDao {
-	public List<VentasDto> consultarVentasId(int id_empleado, VentasListasDto ventasListaDto) throws Exception {
-		Connection con= new Conexion().obtenerConexion();
+	public List<VentasDto> consultarVentasId(EmpleadoDto empleadoDto, VentasListasDto ventasListaDto, Connection con) throws Exception {
 		List<VentasDto> listaVentas = new ArrayList<VentasDto>();
 		PreparedStatement ps;
 		ps = con.prepareStatement("SELECT * FROM ventas WHERE emp_ventas=?");
-		ps.setInt(1, id_empleado);
+		ps.setInt(1, empleadoDto.getId_empleado());
 		ResultSet rs = ps.executeQuery();
 		while (rs.next()) {
 			VentasDto ventas = new VentasDto();
@@ -32,8 +31,7 @@ public class VentasDao {
 		rs.close();
 		return listaVentas;
 	}
-	public List<VentasDto> consultarTotalVentas(VentasListasDto ventasListaDto) throws Exception {
-		Connection con= new Conexion().obtenerConexion();
+	public List<VentasDto> consultarTotalVentas(VentasListasDto ventasListaDto, Connection con) throws Exception {
 		List<VentasDto> listaVentas = new ArrayList<VentasDto>();
 		PreparedStatement ps;
 		ps = con.prepareStatement("SELECT nom_emp, fecha_ventas, valor_ventas, id_ventas from empleados, ventas where id_emp=emp_ventas;");
@@ -50,8 +48,7 @@ public class VentasDao {
 		rs.close();
 		return listaVentas;
 	}
-	public void consultarDiasdeVenta(VentasListasDto ventasListaDto) throws Exception {
-		Connection con= new Conexion().obtenerConexion();
+	public void consultarDiasdeVenta(VentasListasDto ventasListaDto, Connection con) throws Exception {
 		PreparedStatement ps;
 		ps= con.prepareStatement("SELECT * FROM ventas");
 		Map<String, Object> fecha= new LinkedHashMap<String, Object>();
@@ -62,8 +59,7 @@ public class VentasDao {
 		rs.close();
 		ventasListaDto.setLista(fecha);
 	}
-	public List<VentasDto> mostrarVentasDia(VentasDto ventas, VentasListasDto ventasListaDto) throws Exception {
-		Connection con= new Conexion().obtenerConexion();
+	public List<VentasDto> mostrarVentasDia(VentasDto ventas, VentasListasDto ventasListaDto, Connection con) throws Exception {
 		List<VentasDto> listaVentas = new ArrayList<VentasDto>();
 		PreparedStatement ps;
 		ps = con.prepareStatement("SELECT nom_emp, valor_ventas, id_ventas from empleados, ventas where id_emp=emp_ventas AND fecha_ventas=?");
@@ -80,14 +76,13 @@ public class VentasDao {
 		rs.close();
 		return listaVentas;		
 	}
-	public boolean agregarVenta(EmpleadoDto empleado, double valor_venta, String fecha_venta) throws Exception {
-		Connection con= new Conexion().obtenerConexion();
+	public boolean agregarVenta(VentasDto ventas, Connection con) throws Exception {
 		try {
 			PreparedStatement ps;			
 	       	ps=con.prepareStatement("INSERT INTO ventas (emp_ventas, valor_ventas, fecha_ventas) VALUES (?,?,?)");
-	       	ps.setInt(1, empleado.getId_empleado() );
-	       	ps.setDouble(2, valor_venta);
-	       	ps.setString(3, fecha_venta);
+	       	ps.setInt(1, ventas.getId_ventas());
+	       	ps.setDouble(2, ventas.getVal_ventas());
+	       	ps.setString(3, ventas.getFecha_venta());
 	       	ps.executeUpdate();
 	    	return true;
 	    	}catch (Exception e) {

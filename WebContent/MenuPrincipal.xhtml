@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns ="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+	
+	<f:view contentType="text/html">
+        <h:head>
+            <f:facet name="first">
+                <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+                <title>Tienda Cristhian - Menu Principal </title>
+            </f:facet>
+        </h:head>
+        <h:body style="background-color:#f6ffef">
+         <h:form id="form"> 
+            <p:panel id="login" style="width:60%; margin-top:190px; margin-left:280px; text-align:center;" header="Iniciar sesion en la aplicacion">
+	   		 <p:panelGrid style="width:100%; text-align:center;" columns="5">
+	   		  <p:commandButton value="Empleado" id="emp" update=":form:login" action="#{menu.redirigeEmpleado()}"/>            	
+	   		  <p:commandButton value="Producto" id="pro" update=":form:login" action="#{menu.redirigeProducto()}"/>            	
+	   		  <p:commandButton value="Ventas" id="ven" update=":form:login" action="#{menu.redirigeVentas()}"/>            	
+	   		  <p:commandButton value="Compras" id="com" update=":form:login" action="#{menu.redirigeCompras()}"/>            	
+	   		  <p:commandButton value="Facturacion" id="fac" update=":form:login" action="#{menu.redirigeFacturacion()}"/>            	
+	   		 </p:panelGrid>
+	   		</p:panel> 
+         </h:form>
+      </h:body> 
+     </f:view>        
+</html>

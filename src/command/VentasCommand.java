@@ -20,7 +20,7 @@ public class VentasCommand {
 		if(ventasListaDto==null){
 			ventasListaDto= new VentasListasDto();
 		}
-		ventasManager.consultarVentasporId(empleadoDto.getId_empleado(), ventasListaDto);
+		ventasManager.consultarVentasporId(empleadoDto, ventasListaDto);
 		ventasListaDto.getListaVentas();		
 	}
 	public void mostrarTotalVentas(VentasListasDto ventasListaDto) throws Exception{
@@ -46,11 +46,16 @@ public class VentasCommand {
 	}	
 	public void agregarVentas(EmpleadoDto empleado, ProductosListaDto productosLista) throws Exception{
 		FacesMessage message = null;
-		if(ventasManager.agregar(empleado, productosLista)) {
-			message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Compra en Tienda Cristhian", "La venta ha sido registrado");
+		if(productosLista.getLista().size()!=0){
+			if(ventasManager.agregar(empleado, productosLista)) {
+				message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Compra en Tienda Cristhian", "La venta ha sido registrado");
+			}
+			else {
+				message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Compra en Tienda Cristhian", "La venta no ha sido registrado");
+			}
 		}
-		else {
-			message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Compra en Tienda Cristhian", "La venta no ha sido registrado");
+		else{
+			message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Compra en Tienda Cristhian", "Proceso no ha sido registrado");
 		}
 		RequestContext.getCurrentInstance().showMessageInDialog(message);
 	}
@@ -58,7 +63,7 @@ public class VentasCommand {
 		return ventasManager.calcularVentasTotales(ventasListaDto);
 	}
 	public double ventasEmpleadosPorid(EmpleadoDto empleadoDto, VentasListasDto ventasListaDto) throws Exception{
-		return ventasManager.calcularVentasporId(empleadoDto.getId_empleado(), ventasListaDto);
+		return ventasManager.calcularVentasporId(empleadoDto, ventasListaDto);
 	}
 	public double ventasporDia(VentasDto ventas,VentasListasDto ventasListaDto) throws Exception{
 		return ventasManager.calcularventasPorDia(ventas, ventasListaDto);

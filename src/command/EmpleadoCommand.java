@@ -14,13 +14,12 @@ import manager.EmpleadoManager;
 @ManagedBean(name="empleado")
 public class EmpleadoCommand {
 	EmpleadoManager empleadoManager= new EmpleadoManager();
+	ExternalContext context= FacesContext.getCurrentInstance().getExternalContext();
 	
 	public void loginEmpleado(EmpleadoDto empleadoDto) throws Exception{
-		String per_login=empleadoManager.loginEmpleado(empleadoDto.getId_empleado(), empleadoDto.getPass_empleado());
-		empleadoDto.setNom_empleado(per_login);
-		ExternalContext context= FacesContext.getCurrentInstance().getExternalContext();
+		String per_login=empleadoManager.loginEmpleado(empleadoDto);		
 		if(per_login!=null){
-			context.redirect(context.getRequestContextPath()+"/IngresarEmpleado.xhtml");
+			context.redirect(context.getRequestContextPath()+"/MenuPrincipal.xhtml");
 		}
 		else{
 			context.redirect(context.getRequestContextPath()+"/Login.xhtml");			
@@ -37,15 +36,15 @@ public class EmpleadoCommand {
 		if(empleadoListaDto==null){
 			empleadoListaDto= new EmpleadoListaDto();
 		}
-		empleadoManager.consultarInfoEmpleado(empleadoDto.getId_empleado(), empleadoListaDto);
+		empleadoManager.consultarInfoEmpleado(empleadoDto, empleadoListaDto);
 		empleadoListaDto.getLista();
 	}
 	public void consultarId(EmpleadoDto empleadoDto) throws Exception{
 		FacesMessage message=null;
-		empleadoManager.consultarIdentificacion(empleadoDto.getId_empleado());
-		if(empleadoManager.consultarIdentificacion(empleadoDto.getId_empleado())!=null){
+		empleadoManager.consultarIdentificacion(empleadoDto);
+		if(empleadoManager.consultarIdentificacion(empleadoDto)!=null){
 			message = new FacesMessage(FacesMessage.SEVERITY_FATAL, "Registro en Tienda Cristhian", "La identidad esta registro con " + 
-			empleadoManager.consultarIdentificacion(empleadoDto.getId_empleado()));			
+			empleadoManager.consultarIdentificacion(empleadoDto));			
 		}
 		else{
 			message= new FacesMessage(FacesMessage.SEVERITY_INFO, "Registro en Tienda Cristhian", "Identidad no registrada");
@@ -77,12 +76,12 @@ public class EmpleadoCommand {
 	}
 	public void eliminarEmpleado(EmpleadoDto empleadoDto) throws Exception{
 		FacesMessage message= null;
-		if(empleadoManager.eliminar(empleadoDto.getId_empleado())){
-			message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Eliminacion exitosa", "El empleado con ID: " + empleadoDto.getId_empleado()
-			+ " ha sido eliminado");
+		if(empleadoManager.eliminar(empleadoDto)){
+			message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Eliminacion exitosa", "El empleado con ID: "
+			+ empleadoDto + " ha sido eliminado");
 		}else{
-			message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Eliminacion erronea", "El empleado con ID: " + empleadoDto.getId_empleado()
-			+ " no ha sido registrado");
+			message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Eliminacion erronea", "El empleado con ID: "
+		    + empleadoDto + " no ha sido registrado");
 		}
 		RequestContext.getCurrentInstance().showMessageInDialog(message);	
 	}

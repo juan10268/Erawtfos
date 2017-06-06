@@ -6,8 +6,7 @@ import java.sql.PreparedStatement;
 import dto.EmpleadoDto;
 
 public class ComprasDao {
-	public boolean agregarCompra(EmpleadoDto empleado, double valor_compra, String fecha_venta) throws Exception {
-		Connection con= new Conexion().obtenerConexion();
+	public boolean agregarCompra(EmpleadoDto empleado, double valor_compra, String fecha_venta, Connection con) throws Exception {
 		try {			
 			PreparedStatement ps;
 			ps=con.prepareStatement("INSERT INTO compras (valor_compras, dia_compras, emp_compras) VALUES (?,?,?)");

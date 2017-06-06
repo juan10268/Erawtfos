@@ -13,7 +13,7 @@
                 <title>Tienda Cristhian - Ventas </title>
             </f:facet>
         </h:head>
-       <h:body onload="#{empleado.consultarEmpleadoVentas(empleadoListaDto)}">
+       <h:body style="background-color:#f6ffef" onload="#{empleado.consultarEmpleadoVentas(empleadoListaDto)}">
        	 <h:form id="formInicio">
           	<p:growl id="msgs" showDetail="true" />
             <p:panel widgetVar="inicio" style="width:65%; margin-top:75px; margin-left:230px; text-align:center;" header="Consulta de ventas en la aplicacion">
@@ -52,7 +52,7 @@
 		  </p:panel>
         </h:form>
         </h:body>
-        <h:body onload="#{ventas.mostrarTotalVentas(ventasListasDto)}">
+        <h:body style="background-color:#f6ffef" onload="#{ventas.mostrarTotalVentas(ventasListasDto)}">
         <h:form id="formvistas">           	
             <p:panel widgetVar="total_ven" id="total_ven" style="width:60%; margin-top:75px; margin-left:300px; text-align:center; display:none" header="Mostrar ventas - Tienda Cristhian">
 	   		 <p:dataTable var="listaventas" value="#{ventasListasDto.listaVentas}" widgetVar="listainfo" id="lista" rendered="true" style="width:100%; text-align:center">				
@@ -78,7 +78,7 @@
             </p:panel>
        </h:form>
     </h:body>
-    <h:body onload="#{ventas.mostrarVentaspordia(ventasListasDto)};">
+    <h:body style="background-color:#f6ffef" onload="#{ventas.mostrarVentaspordia(ventasListasDto)};">
         <h:form id="formdia">           	
            <p:panel widgetVar="dia" style="display:none;width:40%; margin-top:75px; margin-left:400px; text-align:center;" header="Mostrar ventas por empleado - Tienda Cristhian">
 	   		 <p:panelGrid style="width:100%; text-align:center" columns= "1">
