@@ -19,7 +19,7 @@ public class ComprasCommand {
 			message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Compra en Tienda Cristhian", "La compra ha sido registrado");
 		}
 		else {
-			message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Compra en Tienda Cristhian", "La compra no ha sido registrado");
+			message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Compra en Tienda Cristhian", "La compra no ha sido registrada");
 		}
 		RequestContext.getCurrentInstance().showMessageInDialog(message);
 	}

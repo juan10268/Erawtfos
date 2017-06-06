@@ -3,16 +3,16 @@ package dao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 
-import dto.EmpleadoDto;
+import dto.ComprasDto;
 
 public class ComprasDao {
-	public boolean agregarCompra(EmpleadoDto empleado, double valor_compra, String fecha_venta, Connection con) throws Exception {
+	public boolean agregarCompra(ComprasDto comprasDto, Connection con) throws Exception {
 		try {			
 			PreparedStatement ps;
 			ps=con.prepareStatement("INSERT INTO compras (valor_compras, dia_compras, emp_compras) VALUES (?,?,?)");
-	      	ps.setDouble(1, valor_compra);
-	       	ps.setString(2, fecha_venta);
-	       	ps.setInt(3, empleado.getId_empleado());
+	      	ps.setDouble(1, comprasDto.getValor_compra());
+	       	ps.setString(2, comprasDto.getDia_compra());
+	       	ps.setInt(3, comprasDto.getEmp_compra());
 	    	ps.executeUpdate();	
 	    	return true;
 	    	}

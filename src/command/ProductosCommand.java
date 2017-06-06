@@ -122,7 +122,7 @@ public class ProductosCommand {
 			productosLista.getLista();			
 		}
 		else{
-			productosLista.getLista().remove(productoDto);
+			productosLista.getLista().size();
 		}			
 	}
 }

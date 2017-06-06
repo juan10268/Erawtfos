@@ -7,6 +7,7 @@ import java.util.Calendar;
 import javax.sql.DataSource;
 
 import dao.ComprasDao;
+import dto.ComprasDto;
 import dto.EmpleadoDto;
 import dto.ProductosListaDto;
 import util.PersistUtil;
@@ -21,11 +22,16 @@ public class ComprasManager {
 	}
 
 	public boolean agregarCompra(EmpleadoDto empleado, ProductosListaDto productosLista) throws Exception{
+		ComprasDto comprasDto= new ComprasDto();
 		Connection con= dataSource.getConnection();
 		Calendar c= Calendar.getInstance();
 		SimpleDateFormat formatDate= new SimpleDateFormat("dd/MM/yyyy");
-		String fecha_venta=formatDate.format(c.getTime());
-		double valor_venta= productoManager.valorFacturar(productosLista);
-		return comprasDao.agregarCompra(empleado, valor_venta, fecha_venta, con);	
+		comprasDto.setDia_compra(formatDate.format(c.getTime()));
+		comprasDto.setValor_compra(productoManager.valorFacturar(productosLista));
+		comprasDto.setEmp_compra(empleado.getId_empleado());
+		System.out.println(comprasDto.getDia_compra());
+		System.out.println(comprasDto.getValor_compra());
+		System.out.println(comprasDto.getEmp_compra());
+		return comprasDao.agregarCompra(comprasDto, con);	
 	}
 }
