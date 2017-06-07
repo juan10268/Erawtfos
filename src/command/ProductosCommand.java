@@ -10,11 +10,23 @@ import dto.ProductosDto;
 import dto.ProductosListaDto;
 import manager.ProductosManager;
 
+/**
+ * @author Tienda Cristhian
+ * @version 1.0
+ * Esta clase recibe la informacion de los productos de la vista y la manda a otra capa.
+ * En esta capa no se hacen validaciones.
+ */
+
 @ManagedBean(name="producto")
 @ViewScoped
 public class ProductosCommand {
-	ProductosManager productosManager= new ProductosManager();	
+	ProductosManager productosManager= new ProductosManager();
 	
+	/**
+	 * @author Tienda Cristhian
+	 * @version 1.0
+	 * @param ProductosDto
+	 */	
 	public void agregar(ProductosDto productosDto) throws Exception{
 		FacesMessage message = null;
 		if (productosManager.agregar(productosDto)) {
@@ -26,7 +38,12 @@ public class ProductosCommand {
 					+ productosDto.getProducto_nombre() + " no ha sido registrado");
 		}
 		RequestContext.getCurrentInstance().showMessageInDialog(message);
-	}	
+	}
+	/**
+	 * @author Tienda Cristhian
+	 * @version 1.0
+	 * @param ProductosDto
+	 */
 	public void consultarId(ProductosDto productosDto) throws Exception{
 		FacesMessage message=null;
 		productosManager.consultarIdProducto(productosDto);		
@@ -39,6 +56,11 @@ public class ProductosCommand {
 		}
 		RequestContext.getCurrentInstance().showMessageInDialog(message);
 	}
+	/**
+	 * @author Tienda Cristhian
+	 * @version 1.0
+	 * @param ProductosDto
+	 */
 	public void eliminar(ProductosDto productosDto) throws Exception{
 		FacesMessage message = null;
 		if (productosManager.eliminar(productosDto)){
@@ -49,13 +71,23 @@ public class ProductosCommand {
 		}
 		RequestContext.getCurrentInstance().showMessageInDialog(message);
 	}	
+	/**
+	 * @author Tienda Cristhian
+	 * @version 1.0
+	 * @param ProductosListaDto
+	 */
 	public void consultarProducto(ProductosListaDto productosListaDto) throws Exception{
 		if(productosListaDto==null){
 			productosListaDto= new ProductosListaDto();
 		}
 		productosManager.consultarProducto(productosListaDto);
 		productosListaDto.getListaProducto();
-	}	
+	}
+	/**
+	 * @author Tienda Cristhian
+	 * @version 1.0
+	 * @param ProductosListaDto
+	 */
 	public void listartodosProductos(ProductosListaDto productosListaDto) throws Exception{
 		if(productosListaDto==null){
 			productosListaDto= new ProductosListaDto();
@@ -63,6 +95,11 @@ public class ProductosCommand {
 		productosManager.consultartodosProductos(productosListaDto);
 		productosListaDto.getLista();
 	}
+	/**
+	 * @author Tienda Cristhian
+	 * @version 1.0
+	 * @param ProductosDto, ProductosListaDto
+	 */
 	public void facturarProductoVenta(ProductosDto productoDto, ProductosListaDto productosLista) throws Exception{	
 		FacesMessage message=null;
 		if(productoDto.getProducto_cantidad()!=0){
@@ -84,12 +121,27 @@ public class ProductosCommand {
 		}		
 		RequestContext.getCurrentInstance().showMessageInDialog(message);			
 	}	
+	/**
+	 * @author Tienda Cristhian
+	 * @version 1.0
+	 * @param ProductosListaDto
+	 */
 	public double valorfacturar(ProductosListaDto productosLista) throws Exception{	
 		return productosManager.valorFacturar(productosLista);
 	}
+	/**
+	 * @author Tienda Cristhian
+	 * @version 1.0
+	 * @param ProductosListaDto
+	 */
 	public int cantidadProductos(ProductosListaDto productosLista) throws Exception{
 		return productosManager.cantidadProductos(productosLista);
 	}
+	/**
+	 * @author Tienda Cristhian
+	 * @version 1.0
+	 * @param ProductosDto
+	 */
 	public void canti_productoVenta(ProductosDto productoDto) throws Exception{
 		FacesMessage message=null;
 		if(productoDto.getProducto_cantidad()!=0){
@@ -108,12 +160,22 @@ public class ProductosCommand {
 		}		
 		RequestContext.getCurrentInstance().showMessageInDialog(message);
 	}
+	/**
+	 * @author Tienda Cristhian
+	 * @version 1.0
+	 * @param ProductosDto
+	 */
 	public void canti_productoCompra(ProductosDto productoDto) throws Exception{
 		FacesMessage message=null;
 		message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Informacion sobre producto","Actualmente del producto hay "
 		+ productosManager.inventariodisponibleporId(productoDto));		
 		RequestContext.getCurrentInstance().showMessageInDialog(message);
 	}
+	/**
+	 * @author Tienda Cristhian
+	 * @version 1.0
+	 * @param ProductosDto, ProductosListaDto
+	 */
 	public void facturarProductoCompra(ProductosDto productoDto, ProductosListaDto productosLista) throws Exception{
 		if(productoDto.getProducto_cantidad()!=0){
 			productoDto=productosManager.facturarProducto(productoDto);	

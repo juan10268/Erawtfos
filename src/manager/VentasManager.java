@@ -13,6 +13,12 @@ import dto.VentasDto;
 import dto.VentasListasDto;
 import util.PersistUtil;
 
+/**
+ * @author Tienda Cristhian
+ * @version 1.0
+ * Esta clase recibe la informacion de VentasProductosCommand y la manda a VentasDao.
+ * En esta capa se hacen validaciones.
+ */
 public class VentasManager {
 	private DataSource dataSource;
 	VentasDao ventasDao= new VentasDao();
@@ -21,11 +27,22 @@ public class VentasManager {
 	public VentasManager(){
 		dataSource= PersistUtil.getDataSource();
 	}
-
+	/**
+	 * @author Tienda Cristhian
+	 * @version 1.0
+	 * @param EmpleadoDto
+	 * @param VentasListasDto
+	 */
 	public void consultarVentasporId(EmpleadoDto empleadoDto, VentasListasDto ventasListaDto) throws Exception{
 		Connection con= dataSource.getConnection();
 		ventasDao.consultarVentasId(empleadoDto, ventasListaDto, con);			
 	}
+	/**
+	 * @author Tienda Cristhian
+	 * @version 1.0
+	 * @param VentasListasDto
+	 * @return suma
+	 */
 	public double calcularVentasTotales(VentasListasDto ventasListaDto) throws Exception{
 		Connection con= dataSource.getConnection();
 		double suma=0;
@@ -35,6 +52,11 @@ public class VentasManager {
 		}
 		return suma;
 	}
+	/**
+	 * @author Tienda Cristhian
+	 * @version 1.0
+	 * @param VentasListasDto
+	 */
 	public void consultarVentasTotal(VentasListasDto ventasListaDto) throws Exception {
 		Connection con= dataSource.getConnection();
 		ventasDao.consultarTotalVentas(ventasListaDto, con);
@@ -44,6 +66,13 @@ public class VentasManager {
 			suma=suma+valor;
 		}
 	}
+	/**
+	 * @author Tienda Cristhian
+	 * @version 1.0
+	 * @param empleadoDto
+	 * @param ventasListaDto
+	 * @return suma
+	 */
 	public double calcularVentasporId(EmpleadoDto empleadoDto,VentasListasDto ventasListaDto) throws Exception {
 		Connection con= dataSource.getConnection();
 		double suma=0;
@@ -53,14 +82,32 @@ public class VentasManager {
 		}
 		return suma;
 	}
+	/**
+	 * @author Tienda Cristhian
+	 * @version 1.0
+	 * @param ventasListaDto
+	 */
 	public void consultarDiasVenta(VentasListasDto ventasListaDto) throws Exception {
 		Connection con= dataSource.getConnection();
 		ventasDao.consultarDiasdeVenta(ventasListaDto, con);
 	}
+	/**
+	 * @author Tienda Cristhian
+	 * @version 1.0
+	 * @param ventasListaDto
+	 * @param ventas
+	 */
 	public void mostrarDiaVentas(VentasDto ventas, VentasListasDto ventasListaDto) throws Exception {
 		Connection con= dataSource.getConnection();
 		ventasDao.mostrarVentasDia(ventas, ventasListaDto, con);
 	}
+	/**
+	 * @author Tienda Cristhian
+	 * @version 1.0
+	 * @param ventasListaDto
+	 * @param ventas
+	 * @return suma
+	 */
 	public double calcularventasPorDia(VentasDto ventas,VentasListasDto ventasListaDto) throws Exception {
 		Connection con= dataSource.getConnection();
 		double suma=0;
@@ -70,6 +117,14 @@ public class VentasManager {
 		}
 		return suma;
 	}
+	/**
+	 * @author Tienda Cristhian
+	 * @version 1.0
+	 * @param empleado
+	 * @param productoslista
+	 * @exception Exception
+	 * @return boolean
+	 */
 	public boolean agregar(EmpleadoDto empleado, ProductosListaDto productosLista) throws Exception {
 		Connection con= dataSource.getConnection();
 		VentasDto ventas= new VentasDto();

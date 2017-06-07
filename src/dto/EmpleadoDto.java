@@ -2,6 +2,12 @@ package dto;
 
 import java.io.Serializable;
 
+/**
+ * @author Tienda Cristhian
+ * @version 1.0
+ * Esta clase contiene los atributos de empleado
+ */
+
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 

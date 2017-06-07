@@ -12,6 +12,13 @@ import dto.EmpleadoDto;
 import dto.ProductosListaDto;
 import util.PersistUtil;
 
+/**
+ * @author Tienda Cristhian
+ * @version 1.0
+ * Esta clase recibe la informacion de ComprasCommand y hace las validaciones.
+ * Ejecuta la accion de agregar la compra del command y la manda al dao.
+ * En esta capa se hacen validaciones.
+ */
 public class ComprasManager {
 	private DataSource dataSource;
 	ComprasDao comprasDao= new ComprasDao();
@@ -20,7 +27,13 @@ public class ComprasManager {
 	public ComprasManager(){
 		dataSource= PersistUtil.getDataSource();
 	}
-
+	/**
+	 * @author Tienda Cristhian
+	 * @version 1.0
+	 * @param EmpleadoDto
+	 * @param ProductosListaDto
+	 * @return boolean
+	 */
 	public boolean agregarCompra(EmpleadoDto empleado, ProductosListaDto productosLista) throws Exception{
 		ComprasDto comprasDto= new ComprasDto();
 		Connection con= dataSource.getConnection();

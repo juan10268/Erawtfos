@@ -10,13 +10,26 @@ import java.util.Map;
 
 import dto.ProductosDto;
 import dto.ProductosListaDto;
+import util.PersistUtil;
 
+/**
+ * @author Tienda Cristhian
+ * @version 1.0
+ * Esta clase hace la insercion en la base de datos del objeto producto.
+ * En esta capa se hacen validaciones unicamente de conexión.
+ */
 public class ProductosDao {
-	ProductosDto productosDto= new ProductosDto();	
-
+	ProductosDto productosDto= new ProductosDto();
+	/**
+	 * @author Tienda Cristhian
+	 * @version 1.0
+	 * @param ProductosDto
+	 * @param Connection
+	 * @return boolean
+	 */
 	public boolean agregar(ProductosDto producto, Connection con) throws Exception {
+		PreparedStatement ps = null;
 		try {			
-			PreparedStatement ps;
 			ps=con.prepareStatement("INSERT INTO productos (id_producto, nombre_producto, cantidad_producto, valor_producto)" 
 					+ " VALUES (?,?,?,?)") ;
 			ps.setInt(1, producto.getProducto_id());
@@ -27,19 +40,37 @@ public class ProductosDao {
 			return true;
 		}
 		catch (Exception e) {
-			return false;
+			con.rollback();
 		}
+		finally {
+			PersistUtil.closeResources(ps);
+		}
+		return false;
 	}
+	/**
+	 * @author Tienda Cristhian
+	 * @version 1.0
+	 * @param ProductosDto
+	 * @param Connection
+	 * @return boolean
+	 */
 	public boolean eliminar(ProductosDto productos, Connection con) throws Exception {
-		String sql = "DELETE FROM productos WHERE id_producto= ?";		
-		PreparedStatement instruccion = con.prepareStatement(sql);
-		instruccion.setInt(1, productos.getProducto_id());
-		if (instruccion.executeUpdate() >= 1) {
+		PreparedStatement ps;
+		ps= con.prepareStatement("DELETE FROM productos WHERE id_producto= ?");
+		ps.setInt(1, productos.getProducto_id());
+		if (ps.executeUpdate() >= 1) {
 			return true;
 		} else {
 			return false;
 		}
 	}
+	/**
+	 * @author Tienda Cristhian
+	 * @version 1.0
+	 * @param ProductosDto
+	 * @param Connection
+	 * @return boolean
+	 */
 	public boolean compras(ProductosDto productos, Connection con) throws Exception {
 		PreparedStatement ps;
 		ps= con.prepareStatement("UPDATE productos SET cantidad_producto = cantidad_producto + ? WHERE id_producto=?");
@@ -51,6 +82,12 @@ public class ProductosDao {
 		    return false;
 	    }
 	}
+	/**
+	 * @author Tienda Cristhian
+	 * @version 1.0
+	 * @param ProductosListaDto
+	 * @param Connection
+	 */
 	public void consultarProducto(ProductosListaDto productosListaDto, Connection con) throws Exception  {
 		PreparedStatement ps;
 		ps= con.prepareStatement("SELECT * FROM productos");
@@ -62,17 +99,32 @@ public class ProductosDao {
 		rs.close();
 		productosListaDto.setListaProducto(producto);
 	}
+	/**
+	 * @author Tienda Cristhian
+	 * @version 1.0
+	 * @param ProductosDto
+	 * @param Connection
+	 * @return nombre del producto
+	 */
 	public String consultarIdProducto(ProductosDto productosDto, Connection con) throws Exception {
 		PreparedStatement pst;
 		pst= con.prepareStatement("SELECT * FROM productos where id_producto=?");
 		pst.setInt(1, productosDto.getProducto_id());
 		ResultSet rs= pst.executeQuery();
+		String nom_produc= null;
 		while(rs.next()){
-			productosDto.setProducto_nombre(rs.getString("nombre_producto"));	
-		}
-		String nom_produc= productosDto.getProducto_nombre();
+			productosDto.setProducto_nombre(rs.getString("nombre_producto"));			
+			nom_produc= productosDto.getProducto_nombre();
+		}		
 		return nom_produc;
 	}
+	/**
+	 * @author Tienda Cristhian
+	 * @version 1.0
+	 * @param ProductosListaDto
+	 * @param Connection
+	 * @return lista de todos los productos
+	 */
 	public List<ProductosDto> consultartodosProductos(ProductosListaDto productosListaDto, Connection con) throws Exception {
 		List<ProductosDto> listaproductos = new ArrayList<ProductosDto>();
 		PreparedStatement ps;
@@ -90,6 +142,13 @@ public class ProductosDao {
 		rs.close();
 		return listaproductos;
 	}
+	/**
+	 * @author Tienda Cristhian
+	 * @version 1.0
+	 * @param ProductosDto
+	 * @param Connection
+	 * @return objeto ProductosDto para la factura
+	 */
 	public ProductosDto consultarProductosporId(ProductosDto productoDto, Connection con) throws Exception {
 		ProductosDto producto = new ProductosDto();
 		PreparedStatement ps;
@@ -105,6 +164,13 @@ public class ProductosDao {
 		rs.close();
 		return producto;
 	}
+	/**
+	 * @author Tienda Cristhian
+	 * @version 1.0
+	 * @param ProductosDto
+	 * @param Connection
+	 * @return boolean
+	 */
 	public boolean disminuirProducto(ProductosDto productos, Connection con) throws Exception {
 		PreparedStatement ps;
 		ps=con.prepareStatement("UPDATE productos SET cantidad_producto = cantidad_producto-? where id_producto=?");
@@ -116,6 +182,13 @@ public class ProductosDao {
 		    return false;
 	    }
 	}
+	/**
+	 * @author Tienda Cristhian
+	 * @version 1.0
+	 * @param ProductosDto
+	 * @param Connection
+	 * @return cantidad del producto seleccionado
+	 */
 	public int inventariodisponibleporId(ProductosDto productoDto, Connection con) throws Exception {
 		PreparedStatement ps;
 		ps= con.prepareStatement("SELECT * FROM productos where id_producto=?");
@@ -128,6 +201,13 @@ public class ProductosDao {
 		}		
 		return canti_produc;
 	}
+	/**
+	 * @author Tienda Cristhian
+	 * @version 1.0
+	 * @param ProductosDto
+	 * @param Connection
+	 * @return boolean
+	 */
 	public boolean aumentarProducto(ProductosDto productos, Connection con) throws Exception {
 		PreparedStatement ps;
 		ps=con.prepareStatement("UPDATE productos SET cantidad_producto = cantidad_producto +? where id_producto=?");

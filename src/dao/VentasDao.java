@@ -12,7 +12,21 @@ import dto.EmpleadoDto;
 import dto.VentasDto;
 import dto.VentasListasDto;
 
+/**
+ * @author Tienda Cristhian
+ * @version 1.0
+ * Esta clase hace la insercion en la base de datos del objeto venta.
+ * En esta capa se hacen validaciones unicamente de conexión.
+ */
 public class VentasDao {
+	/**
+	 * @author Tienda Cristhian
+	 * @version 1.0
+	 * @param EmpleadoDto
+	 * @param VentasListaDto
+	 * @param Connection
+	 * @return listas por ventas de empleado
+	 */
 	public List<VentasDto> consultarVentasId(EmpleadoDto empleadoDto, VentasListasDto ventasListaDto, Connection con) throws Exception {
 		List<VentasDto> listaVentas = new ArrayList<VentasDto>();
 		PreparedStatement ps;
@@ -31,6 +45,13 @@ public class VentasDao {
 		rs.close();
 		return listaVentas;
 	}
+	/**
+	 * @author Tienda Cristhian
+	 * @version 1.0
+	 * @param VentasListaDto
+	 * @param Connection
+	 * @return lista totales de ventas
+	 */
 	public List<VentasDto> consultarTotalVentas(VentasListasDto ventasListaDto, Connection con) throws Exception {
 		List<VentasDto> listaVentas = new ArrayList<VentasDto>();
 		PreparedStatement ps;
@@ -48,6 +69,13 @@ public class VentasDao {
 		rs.close();
 		return listaVentas;
 	}
+	/**
+	 * @author Tienda Cristhian
+	 * @version 1.0
+	 * @param VentasListasDto
+	 * @param Connection
+	 * @return ventas por dias
+	 */
 	public void consultarDiasdeVenta(VentasListasDto ventasListaDto, Connection con) throws Exception {
 		PreparedStatement ps;
 		ps= con.prepareStatement("SELECT * FROM ventas");
@@ -59,6 +87,14 @@ public class VentasDao {
 		rs.close();
 		ventasListaDto.setLista(fecha);
 	}
+	/**
+	 * @author Tienda Cristhian
+	 * @version 1.0
+	 * @param VentasDto
+	 * @param VentasListasDto
+	 * @param Connection
+	 * @return ventas de dias por vendedor
+	 */
 	public List<VentasDto> mostrarVentasDia(VentasDto ventas, VentasListasDto ventasListaDto, Connection con) throws Exception {
 		List<VentasDto> listaVentas = new ArrayList<VentasDto>();
 		PreparedStatement ps;
@@ -76,6 +112,13 @@ public class VentasDao {
 		rs.close();
 		return listaVentas;		
 	}
+	/**
+	 * @author Tienda Cristhian
+	 * @version 1.0
+	 * @param VentasDto
+	 * @param Connection
+	 * @return boolean
+	 */
 	public boolean agregarVenta(VentasDto ventas, Connection con) throws Exception {
 		try {
 			PreparedStatement ps;			

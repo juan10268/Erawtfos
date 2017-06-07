@@ -8,6 +8,12 @@ import java.util.List;
 import java.util.Map;
 import javax.faces.bean.ViewScoped;
 
+/**
+ * @author Tienda Cristhian
+ * @version 1.0
+ * Esta clase contiene los atributos para las listas de los productos
+ */
+
 @ManagedBean
 @ViewScoped
 public class ProductosListaDto implements Serializable{	

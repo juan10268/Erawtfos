@@ -2,6 +2,12 @@ package dto;
 
 import javax.faces.bean.ManagedBean;
 
+/**
+ * @author Tienda Cristhian
+ * @version 1.0
+ * Esta clase contiene los atributos de las ventas
+ */
+
 @ManagedBean
 public class VentasDto {
 	public int id_ventas, emp_ventas;	

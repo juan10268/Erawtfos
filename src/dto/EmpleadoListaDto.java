@@ -7,6 +7,12 @@ import java.util.Map;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 
+/**
+ * @author Tienda Cristhian
+ * @version 1.0
+ * Esta clase contiene los atributos para las listas de los empleados
+ */
+
 @ManagedBean
 @ViewScoped
 public class EmpleadoListaDto implements Serializable{

@@ -11,11 +11,22 @@ import dto.EmpleadoDto;
 import dto.EmpleadoListaDto;
 import manager.EmpleadoManager;
 
+/**
+ * @author Tienda Cristhian
+ * @version 1.0
+ * Esta clase recibe la informacion de los empleados de la vista y la manda a otra capa.
+ * En esta capa no se hacen validaciones.
+ */
 @ManagedBean(name="empleado")
 public class EmpleadoCommand {
 	EmpleadoManager empleadoManager= new EmpleadoManager();
 	ExternalContext context= FacesContext.getCurrentInstance().getExternalContext();
 	
+	/**
+	 * @author Tienda Cristhian
+	 * @version 1.0
+	 * @param EmpleadoDto
+	 */
 	public void loginEmpleado(EmpleadoDto empleadoDto) throws Exception{
 		String per_login=empleadoManager.loginEmpleado(empleadoDto);		
 		if(per_login!=null){
@@ -25,6 +36,11 @@ public class EmpleadoCommand {
 			context.redirect(context.getRequestContextPath()+"/Login.xhtml");			
 		}
 	}
+	/**
+	 * @author Tienda Cristhian
+	 * @version 1.0
+	 * @param EmpleadoListaDto
+	 */
 	public void consultarEmpleado(EmpleadoListaDto empleadoListaDto) throws Exception{
 		if(empleadoListaDto==null){
 			empleadoListaDto= new EmpleadoListaDto();
@@ -32,6 +48,11 @@ public class EmpleadoCommand {
 		empleadoManager.consultarEmpleado(empleadoListaDto);
 		empleadoListaDto.getListaEmpleado();
 	}
+	/**
+	 * @author Tienda Cristhian
+	 * @version 1.0
+	 * @param EmpleadoDto, EmpleadoListaDto
+	 */
 	public void consultarInfo(EmpleadoDto empleadoDto, EmpleadoListaDto empleadoListaDto) throws Exception{		
 		if(empleadoListaDto==null){
 			empleadoListaDto= new EmpleadoListaDto();
@@ -39,6 +60,11 @@ public class EmpleadoCommand {
 		empleadoManager.consultarInfoEmpleado(empleadoDto, empleadoListaDto);
 		empleadoListaDto.getLista();
 	}
+	/**
+	 * @author Tienda Cristhian
+	 * @version 1.0
+	 * @param EmpleadoDto
+	 */
 	public void consultarId(EmpleadoDto empleadoDto) throws Exception{
 		FacesMessage message=null;
 		empleadoManager.consultarIdentificacion(empleadoDto);
@@ -51,6 +77,11 @@ public class EmpleadoCommand {
 		}
 		RequestContext.getCurrentInstance().showMessageInDialog(message);
 	}
+	/**
+	 * @author Tienda Cristhian
+	 * @version 1.0
+	 * @param EmpleadoDto
+	 */
 	public void insertarEmpleado(EmpleadoDto empleadoDto) throws Exception{
 		FacesMessage message = null;
 		if (empleadoManager.agregar(empleadoDto)) {
@@ -62,6 +93,11 @@ public class EmpleadoCommand {
 		}
 		RequestContext.getCurrentInstance().showMessageInDialog(message);
 	}
+	/**
+	 * @author Tienda Cristhian
+	 * @version 1.0
+	 * @param EmpleadoDto
+	 */
 	public void actualizarEmpleado(EmpleadoDto empleadoDto) throws Exception{
 		FacesMessage message= null;
 		if(empleadoManager.actualizar(empleadoDto)){
@@ -74,6 +110,11 @@ public class EmpleadoCommand {
 		}
 		RequestContext.getCurrentInstance().showMessageInDialog(message);		
 	}
+	/**
+	 * @author Tienda Cristhian
+	 * @version 1.0
+	 * @param EmpleadoDto
+	 */
 	public void eliminarEmpleado(EmpleadoDto empleadoDto) throws Exception{
 		FacesMessage message= null;
 		if(empleadoManager.eliminar(empleadoDto)){
@@ -85,6 +126,11 @@ public class EmpleadoCommand {
 		}
 		RequestContext.getCurrentInstance().showMessageInDialog(message);	
 	}
+	/**
+	 * @author Tienda Cristhian
+	 * @version 1.0
+	 * @param EmpleadoListaDto
+	 */
 	public void consultarEmpleadoVentas(EmpleadoListaDto empleadoListaDto) throws Exception{
 		if(empleadoListaDto==null){
 			empleadoListaDto= new EmpleadoListaDto();
