@@ -26,5 +26,9 @@ public class MenuPrincipalCommand{
 		ExternalContext context= FacesContext.getCurrentInstance().getExternalContext();
 		context.redirect(context.getRequestContextPath()+"/Facturacion.xhtml");	
 	}
+	public void redirigeMenuPrincipal() throws Exception{
+		ExternalContext context= FacesContext.getCurrentInstance().getExternalContext();
+		context.redirect(context.getRequestContextPath()+"/MenuPrincipal.xhtml");	
+	}
 }
 		

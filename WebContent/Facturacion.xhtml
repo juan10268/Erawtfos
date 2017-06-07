@@ -10,14 +10,14 @@
         <h:head>
             <f:facet name="first">
                 <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
-                <title>Tienda Cristhian - Facturacion</title>
+                <title>Tienda Cristhian - Facturación</title>
             </f:facet>
 		</h:head> 		 
 	</f:view>
 	<h:body style="background-color:#f6ffef" onload="#{producto.consultarProducto(productosListaDto)}">
 	  <h:form id="facturacion">
 	  	<p:growl id="msgs"/>	  	  
-	  	<p:panel widgetVar="mostrar" style="width:40%; margin-top:30px; margin-left:400px; text-align:center;" header="Facturacion - Tienda Cristhian">
+	  	<p:panel widgetVar="mostrar" style="width:40%; margin-top:30px; margin-left:400px; text-align:center;" header="Facturación - Tienda Cristhian">
 	   		 <p:panelGrid style="width:100%; text-align:center" columns= "1">
 	   		   <h:outputLabel value="Identidad del vendedor:" />
 	   		   <p:inputText style="width:50%; text-align:center" value="#{empleadoDto.id_empleado}" readonly="true" required="true"/>	
@@ -54,7 +54,8 @@
             <p:inputText id="num_ventas" style="width:50%; text-align:center;" readonly="true" value="#{producto.valorfacturar(productosListaDto)}"/>
             <h:outputLabel value="Productos en la compra:" /> 
             <p:inputText id="valor_ventas" style="width:50%; text-align:center;" readonly="true" value="#{producto.cantidadProductos(productosListaDto)}"/>            
-            </p:panelGrid>            		  	
+            </p:panelGrid> 
+           	<p:commandButton value="Volver Menu Principal" id="Menu" actionListener="#{menu.redirigeMenuPrincipal()}"/>           		  	
 	   </p:outputPanel>	  
 	  </h:form>	
 	</h:body>	

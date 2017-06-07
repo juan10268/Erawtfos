@@ -20,6 +20,7 @@
           	  <p:commandButton value="Ver el total de ventas" ondblclick="PF('inicio').close() ; PF('total_ven').show()"/>
           	  <p:commandButton value="Ver ventas por empleado" ondblclick="PF('inicio').close(); PF('mostrar').show()"/>
           	  <p:commandButton value="Ver ventas por dia" ondblclick="PF('inicio').close(); PF('dia').show()"/> 
+          	    <p:commandButton value="Volver Menu Principal" id="Menu" actionListener="#{menu.redirigeMenuPrincipal()}"/>          	
             </p:panel>
         </h:form>
         <h:form id="consu_ventas">        
@@ -31,7 +32,8 @@
 	   		   		<f:selectItems value="#{empleadoListaDto.listaEmpleado}"/>
 	   		   		<p:ajax event="change" update=":consu_ventas:lista , :consu_ventas:info" listener="#{ventas.mostrarVentas(empleadoDto,ventasListasDto)}"/>
 	   		   </p:selectOneMenu>
-	   		  </p:panelGrid>            
+	   		  </p:panelGrid>
+	   		  <p:commandButton value="Volver Menu Principal" id="Menu" actionListener="#{menu.redirigeMenuPrincipal()}"/>            
               <p:dataTable var="listaventas" value="#{ventasListasDto.listaVentas}" widgetVar="listainfo" id="lista" rendered="true" style="width:100%; margin-top:10px; text-align:center;" emptyMessage="Seleccione el empleado">				
 						<p:column headerText="ID">
 							<h:outputText value="#{listaventas.id_ventas}" />
@@ -49,6 +51,7 @@
             <h:outputLabel value="Valor vendido:" /> 
             <p:inputText id="valor_ventas" style="width:50%; text-align:center;" readonly="true" value="#{ventas.ventasEmpleadosPorid(empleadoDto, ventasListasDto)}"/>            
             </p:panelGrid>
+           
 		  </p:panel>
         </h:form>
         </h:body>
@@ -75,6 +78,7 @@
             <h:outputLabel value="Valor vendido:" /> 
             <p:inputText id="valor_ventas" style="width:50%; text-align:center;" readonly="true" value="#{ventas.ventasEmpleadosTotales(ventasListasDto)}"/>                        
             </p:panelGrid>
+            
             </p:panel>
        </h:form>
     </h:body>
@@ -88,7 +92,8 @@
 	   		   		<f:selectItems value="#{ventasListasDto.lista}"/>
 	   		   		<p:ajax event="change" update=":formdia:lista , :formdia:infodia" listener="#{ventas.mostrarDiaVenta(ventasDto,ventasListasDto)}"/>
 	   		   </p:selectOneMenu>
-	   		  </p:panelGrid> 
+	   		  </p:panelGrid>
+	   		     
 	   		  <p:dataTable var="listadias" value="#{ventasListasDto.listaVentasDia}" id="lista" rendered="true" style="width:100%; margin-top:10px; text-align:center;" emptyMessage="Seleccione la fecha">				
 						<p:column headerText="ID">
 							<h:outputText value="#{listadias.id_ventas}" />
@@ -105,7 +110,8 @@
             <p:inputText id="num_ventas" style="width:50%; text-align:center;" readonly="true" value="#{ventasListasDto.listaVentasDia.size()}"/>
             <h:outputLabel value="Valor vendido:" /> 
             <p:inputText id="valor_ventas" style="width:50%; text-align:center;" readonly="true" value="#{ventas.ventasporDia(ventasDto, ventasListasDto)}"/>            
-            </p:panelGrid>			  
+            </p:panelGrid> 
+              <p:commandButton value="Volver Menu Principal" id="Menu" actionListener="#{menu.redirigeMenuPrincipal()}"/>           			  
             </p:panel>
        </h:form>
     </h:body>

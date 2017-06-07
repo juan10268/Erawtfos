@@ -19,7 +19,8 @@
             <p:panel widgetVar="inicio" style="width:50%; margin-top:75px; margin-left:350px; text-align:center;" header="Consulta de ventas en la aplicacion">
           	  <p:commandButton value="Agregar productos" ondblclick="PF('inicio').close();PF('ingresar').show()"/>
           	  <p:commandButton value="Eliminar productos" ondblclick="PF('inicio').close(); PF('eliminar').show()"/>
-          	  <p:commandButton value="Listar los productos" ondblclick="PF('inicio').close(); PF('total_prod').show()"/>           	  
+          	  <p:commandButton value="Listar los productos" ondblclick="PF('inicio').close(); PF('total_prod').show()"/> 
+          	  <p:commandButton value="Volver Menu Principal" id="Menu" actionListener="#{menu.redirigeMenuPrincipal()}"/>          	  
             </p:panel>
         </h:form> 
         <h:form id="prod_inicio"> 
@@ -37,6 +38,7 @@
             	<p:inputText style="width:100%; text-align:center" value="#{productosDto.producto_valor}" required="true"/>              
             	<p:commandButton value="Ingresar" action="#{producto.agregar(productosDto)}"/>            	
             </p:panelGrid>
+            <p:commandButton value="Volver Menu Principal" id="Menu" actionListener="#{menu.redirigeMenuPrincipal()}"/>
            </p:panel>
         </h:form>        
         <h:form id="formeliminar"> 
@@ -49,6 +51,7 @@
 	   		   </p:selectOneMenu>	
 	   		   <p:commandButton value="Eliminar" action="#{producto.eliminar(productosDto)}"/>				
              </p:panelGrid>
+             <p:commandButton value="Volver Menu Principal" id="Menu" actionListener="#{menu.redirigeMenuPrincipal()}"/>
             </p:panel> 
           </h:form>            
        </h:body>

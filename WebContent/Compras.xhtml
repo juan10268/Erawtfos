@@ -10,7 +10,7 @@
         <h:head>
             <f:facet name="first">
                 <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
-                <title>Tienda Cristhian - Facturacion</title>
+                <title>Tienda Cristhian - Facturación</title>
             </f:facet>
 		</h:head> 		 
 	</f:view>
@@ -31,8 +31,8 @@
                </p:panelGrid> 	
                <p:panelGrid id="panelbutton" style="width:100%; text-align:center" columns="2">               
 	   		   <p:commandButton update=":facturacion:lista , :facturacion:infovalor" action="#{producto.canti_productoCompra(productosDto)}" value="Facturar producto" actionListener="#{producto.facturarProductoCompra(productosDto, productosListaDto)}"/>
-	   		   <p:commandButton update=":facturacion" value="Facturar Compra" action="#{compras.agregarCompra(empleadoDto, productosListaDto)}"/>	   			
-	   		</p:panelGrid>
+	   		   <p:commandButton update=":facturacion" value="Facturar Compra" action="#{compras.agregarCompra(empleadoDto, productosListaDto)}"/>	   		   	   			
+	   		</p:panelGrid>	   		
 	   	</p:panel>	  
 	    <p:outputPanel id="produc_vista" widgetVar="mostrar" style="width:70%; margin-top:30px; margin-left:220px; text-align:center;" header="Mostrar Informacion de empleado - Tienda Cristhian">
 	   	  <p:dataTable widgetVar="listainfo" value="#{productosListaDto.lista}" var="prod" id="lista" rendered="true" emptyMessage="Ingrese un producto" style="width:100%; text-align:center;">	 
@@ -53,8 +53,9 @@
 			<h:outputLabel value="Valor de la compra:" /> 
             <p:inputText id="num_ventas" style="width:50%; text-align:center;" readonly="true" value="#{producto.valorfacturar(productosListaDto)}"/>
             <h:outputLabel value="Productos en la compra:" /> 
-            <p:inputText id="valor_ventas" style="width:50%; text-align:center;" readonly="true" value="#{producto.cantidadProductos(productosListaDto)}"/>            
-            </p:panelGrid>            		  	
+            <p:inputText id="valor_ventas" style="width:50%; text-align:center;" readonly="true" value="#{producto.cantidadProductos(productosListaDto)}"/>
+            </p:panelGrid> 
+            <p:commandButton value="Volver Menu Principal" id="Menu" actionListener="#{menu.redirigeMenuPrincipal()}"/>                                 		  	
 	   </p:outputPanel>	  
 	  </h:form>	
 	</h:body>	
